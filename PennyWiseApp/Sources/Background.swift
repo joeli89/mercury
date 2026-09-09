@@ -33,7 +33,7 @@ struct BackgroundOption: Identifiable, Hashable {
             ("tapestry_full", "Wise World",       "Wise_Tapestry_Platform_Full_Lg_v2"),
         ]
         let imageOptions = tapestries.compactMap { t -> BackgroundOption? in
-            guard let url = Bundle.main.url(forResource: t.file, withExtension: "png") else { return nil }
+            guard let url = Bundle.main.url(forResource: t.file, withExtension: "jpg") else { return nil }
             return BackgroundOption(id: t.id, name: t.name, style: .image(url))
         }
         return [none] + imageOptions

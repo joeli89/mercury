@@ -7,81 +7,81 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D46898E8CE11F33367A7ABA /* Wise_Tapestry_Platform_Full_Lg_v2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 898679C3663B231724E715A0 /* Wise_Tapestry_Platform_Full_Lg_v2.jpg */; };
+		117A43CDBFCB89C5D61023E0 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EEB427FDA62F6B1D059189D6 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg */; };
 		141BD4ADCFED30BC9773940D /* MovieWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80F5740B5EAE882982AE665 /* MovieWriter.swift */; };
 		2031FF561BD8504AEEB93BBF /* FFmpegCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34850990797E85411F010B50 /* FFmpegCompressor.swift */; };
 		2B69FE8D4CCE485A16977728 /* RecordingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8137A4F82513010C168075 /* RecordingController.swift */; };
 		300AFD27DC0469969FC0231E /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9CED0AFA81CD86BA272EBC /* Background.swift */; };
-		3DA6C7A890276AE4F7D3D7D2 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A6659192694B9C253973D99 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.png */; };
+		373B43D512997D18941D0554 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 61CA86D26A062918D28F7F4F /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg */; };
 		3E13AD7E7EFBE18FF9FB0E05 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369C03C626A504B52E5DB0D /* FloatingPanel.swift */; };
-		45D2DDACD23491A59C8348B8 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.png in Resources */ = {isa = PBXBuildFile; fileRef = 06AD69AB1EDEED2E8D053EE9 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.png */; };
-		4AF2A51AD1B3AB29776699A3 /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.png in Resources */ = {isa = PBXBuildFile; fileRef = DBB6B46021214CC7A6ED27BB /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.png */; };
 		595F7A4F5F944C84E8C22B2A /* VideoCompositor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92FE49798D62F36FBF4C1D70 /* VideoCompositor.swift */; };
-		5CD82B7BD2478F9D9AC8B177 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.png in Resources */ = {isa = PBXBuildFile; fileRef = D28692DC13C958D1B0730A63 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.png */; };
+		5D9345290A4B0035DB2F85B3 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2530C59F268EA46EEF09B472 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg */; };
 		6C1C2814082035CEA69959AD /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94AC1BE37AE2D58BEA298128 /* ToolbarView.swift */; };
-		6F32084FB0E57632943E8964 /* Wise_Tapestry_Platform_Full_Lg_v2.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FDC14A1A6517C7AA30AF69 /* Wise_Tapestry_Platform_Full_Lg_v2.png */; };
-		71037CA417C74B708A848DE2 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.png in Resources */ = {isa = PBXBuildFile; fileRef = 99F748B53B7ADC0FD5B4F6E1 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.png */; };
 		79E490F2C6076BD6F72F4046 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C844CB3520A6A8145AD310D /* ContentView.swift */; };
-		811BE7271994EC316D356679 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.png in Resources */ = {isa = PBXBuildFile; fileRef = EC195737A24AFDF232B53521 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.png */; };
-		8164766DC27BFABB9ECF70DA /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.png in Resources */ = {isa = PBXBuildFile; fileRef = A6206A02A3D62BF67A2ED300 /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.png */; };
-		8B6F732E4B1E9AB2646CD006 /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.png in Resources */ = {isa = PBXBuildFile; fileRef = 448EDE180F915472088C705D /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.png */; };
+		80209876B9300E84984C9ECC /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 871AAEE7B4468B6AEBAC772F /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg */; };
+		8B87440B74161116A08E9F05 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F97151D7EC05903D001EED84 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg */; };
+		9175C960E2C77E4F87B5C5D9 /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 29001FC9398DF65EEA8345A3 /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg */; };
 		94FC069BF797D8345DF7EF2B /* ScreenCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE42C6C263C7755F5CAB712 /* ScreenCaptureManager.swift */; };
+		9521E48E50E2B8EC7D9123DF /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EAECABDE1A51792B29A39CCE /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg */; };
 		9E9665C8019EB96875D7E12C /* CameraPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A07A836A005B8D4AC49C0E /* CameraPreviewController.swift */; };
-		ABB95AA65CC4B57FCC4695B6 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BBADE8ED4D802119F57DDDD /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.png */; };
+		A3EE7B0480EC8FE9BC1F921A /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8E6DF2A4AEE91DA5813B8B26 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */; };
+		C61D3DB5D2C5F4ABA030F825 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B9BFA4BCB64C5AC2108AD270 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg */; };
 		CAE9D98B584174B1FEF26AE9 /* WindowPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077551456F714D491D58EB1 /* WindowPicker.swift */; };
 		D9EF52E8250284D272B6AF69 /* PennyWiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16CE3C53AA197EBC281E99A /* PennyWiseApp.swift */; };
-		E25BF81E467575190C8E39AC /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B92E33D3DA8E249AC2AA45A /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.png */; };
 		E56AA6E77E40B00F7D409809 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7331FF2CB03B5E5FA38A6E04 /* Permissions.swift */; };
 		E664CA189FB04B9CD64F5759 /* TooltipController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4B71074DE5A9585A18F4D /* TooltipController.swift */; };
 		E75720F2B2F545ECE5992B70 /* CameraCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1574A42E5309D727205741 /* CameraCaptureManager.swift */; };
 		F4B152A08F7A895195533C7C /* AudioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408F4AF6C61F38E414FBB80 /* AudioMixer.swift */; };
+		F6531D1C44193F13BBAA21EB /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4E2A66581699CC4A12D31F39 /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		06AD69AB1EDEED2E8D053EE9 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.png; sourceTree = "<group>"; };
-		2BBADE8ED4D802119F57DDDD /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.png"; sourceTree = "<group>"; };
+		2530C59F268EA46EEF09B472 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg"; sourceTree = "<group>"; };
+		29001FC9398DF65EEA8345A3 /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg; sourceTree = "<group>"; };
 		34850990797E85411F010B50 /* FFmpegCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFmpegCompressor.swift; sourceTree = "<group>"; };
 		3E9CED0AFA81CD86BA272EBC /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
-		448EDE180F915472088C705D /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.png; sourceTree = "<group>"; };
-		4A6659192694B9C253973D99 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.png; sourceTree = "<group>"; };
+		4E2A66581699CC4A12D31F39 /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg; sourceTree = "<group>"; };
 		5077551456F714D491D58EB1 /* WindowPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowPicker.swift; sourceTree = "<group>"; };
 		59C1363E3911AF88EB27EC43 /* PennyWise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PennyWise.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B92E33D3DA8E249AC2AA45A /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.png; sourceTree = "<group>"; };
+		61CA86D26A062918D28F7F4F /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg; sourceTree = "<group>"; };
 		6C8137A4F82513010C168075 /* RecordingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingController.swift; sourceTree = "<group>"; };
 		7331FF2CB03B5E5FA38A6E04 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
 		7E1574A42E5309D727205741 /* CameraCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureManager.swift; sourceTree = "<group>"; };
 		8408F4AF6C61F38E414FBB80 /* AudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixer.swift; sourceTree = "<group>"; };
+		871AAEE7B4468B6AEBAC772F /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg; sourceTree = "<group>"; };
+		898679C3663B231724E715A0 /* Wise_Tapestry_Platform_Full_Lg_v2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_Platform_Full_Lg_v2.jpg; sourceTree = "<group>"; };
+		8E6DF2A4AEE91DA5813B8B26 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg; sourceTree = "<group>"; };
 		92FE49798D62F36FBF4C1D70 /* VideoCompositor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompositor.swift; sourceTree = "<group>"; };
 		94AC1BE37AE2D58BEA298128 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		94F4B71074DE5A9585A18F4D /* TooltipController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipController.swift; sourceTree = "<group>"; };
-		99F748B53B7ADC0FD5B4F6E1 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.png; sourceTree = "<group>"; };
 		9C844CB3520A6A8145AD310D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A6206A02A3D62BF67A2ED300 /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.png; sourceTree = "<group>"; };
+		B9BFA4BCB64C5AC2108AD270 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg; sourceTree = "<group>"; };
 		BAE42C6C263C7755F5CAB712 /* ScreenCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureManager.swift; sourceTree = "<group>"; };
 		C0A07A836A005B8D4AC49C0E /* CameraPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewController.swift; sourceTree = "<group>"; };
-		C4FDC14A1A6517C7AA30AF69 /* Wise_Tapestry_Platform_Full_Lg_v2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wise_Tapestry_Platform_Full_Lg_v2.png; sourceTree = "<group>"; };
 		D16CE3C53AA197EBC281E99A /* PennyWiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PennyWiseApp.swift; sourceTree = "<group>"; };
-		D28692DC13C958D1B0730A63 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.png; sourceTree = "<group>"; };
-		DBB6B46021214CC7A6ED27BB /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.png; sourceTree = "<group>"; };
 		E369C03C626A504B52E5DB0D /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
-		EC195737A24AFDF232B53521 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.png; sourceTree = "<group>"; };
+		EAECABDE1A51792B29A39CCE /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg; sourceTree = "<group>"; };
+		EEB427FDA62F6B1D059189D6 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg; sourceTree = "<group>"; };
 		F80F5740B5EAE882982AE665 /* MovieWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieWriter.swift; sourceTree = "<group>"; };
+		F97151D7EC05903D001EED84 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		1D688AC64790FC7C8B3B2C1E /* Tapestries */ = {
 			isa = PBXGroup;
 			children = (
-				EC195737A24AFDF232B53521 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.png */,
-				448EDE180F915472088C705D /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.png */,
-				4A6659192694B9C253973D99 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.png */,
-				DBB6B46021214CC7A6ED27BB /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.png */,
-				99F748B53B7ADC0FD5B4F6E1 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.png */,
-				A6206A02A3D62BF67A2ED300 /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.png */,
-				06AD69AB1EDEED2E8D053EE9 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.png */,
-				5B92E33D3DA8E249AC2AA45A /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.png */,
-				2BBADE8ED4D802119F57DDDD /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.png */,
-				D28692DC13C958D1B0730A63 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.png */,
-				C4FDC14A1A6517C7AA30AF69 /* Wise_Tapestry_Platform_Full_Lg_v2.png */,
+				61CA86D26A062918D28F7F4F /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg */,
+				4E2A66581699CC4A12D31F39 /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg */,
+				B9BFA4BCB64C5AC2108AD270 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg */,
+				EAECABDE1A51792B29A39CCE /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg */,
+				F97151D7EC05903D001EED84 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg */,
+				871AAEE7B4468B6AEBAC772F /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg */,
+				EEB427FDA62F6B1D059189D6 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg */,
+				29001FC9398DF65EEA8345A3 /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg */,
+				2530C59F268EA46EEF09B472 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg */,
+				8E6DF2A4AEE91DA5813B8B26 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */,
+				898679C3663B231724E715A0 /* Wise_Tapestry_Platform_Full_Lg_v2.jpg */,
 			);
 			path = Tapestries;
 			sourceTree = "<group>";
@@ -186,17 +186,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				811BE7271994EC316D356679 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.png in Resources */,
-				8B6F732E4B1E9AB2646CD006 /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.png in Resources */,
-				3DA6C7A890276AE4F7D3D7D2 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.png in Resources */,
-				4AF2A51AD1B3AB29776699A3 /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.png in Resources */,
-				71037CA417C74B708A848DE2 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.png in Resources */,
-				8164766DC27BFABB9ECF70DA /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.png in Resources */,
-				45D2DDACD23491A59C8348B8 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.png in Resources */,
-				E25BF81E467575190C8E39AC /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.png in Resources */,
-				ABB95AA65CC4B57FCC4695B6 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.png in Resources */,
-				5CD82B7BD2478F9D9AC8B177 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.png in Resources */,
-				6F32084FB0E57632943E8964 /* Wise_Tapestry_Platform_Full_Lg_v2.png in Resources */,
+				373B43D512997D18941D0554 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg in Resources */,
+				F6531D1C44193F13BBAA21EB /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg in Resources */,
+				C61D3DB5D2C5F4ABA030F825 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg in Resources */,
+				9521E48E50E2B8EC7D9123DF /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg in Resources */,
+				8B87440B74161116A08E9F05 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg in Resources */,
+				80209876B9300E84984C9ECC /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg in Resources */,
+				117A43CDBFCB89C5D61023E0 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg in Resources */,
+				9175C960E2C77E4F87B5C5D9 /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg in Resources */,
+				5D9345290A4B0035DB2F85B3 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg in Resources */,
+				A3EE7B0480EC8FE9BC1F921A /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg in Resources */,
+				0D46898E8CE11F33367A7ABA /* Wise_Tapestry_Platform_Full_Lg_v2.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,9 +16,11 @@
 		300AFD27DC0469969FC0231E /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9CED0AFA81CD86BA272EBC /* Background.swift */; };
 		373B43D512997D18941D0554 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 61CA86D26A062918D28F7F4F /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg */; };
 		3E13AD7E7EFBE18FF9FB0E05 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369C03C626A504B52E5DB0D /* FloatingPanel.swift */; };
+		40E45FEF3AD407515641BEBA /* 26-Tahoe-Dark.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 850B487370B3B4852568944E /* 26-Tahoe-Dark.jpeg */; };
 		41DE970EA07570CE4167F672 /* CountdownController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7619E49E8613850A73C62A8 /* CountdownController.swift */; };
 		595F7A4F5F944C84E8C22B2A /* VideoCompositor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92FE49798D62F36FBF4C1D70 /* VideoCompositor.swift */; };
 		5D9345290A4B0035DB2F85B3 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2530C59F268EA46EEF09B472 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg */; };
+		6A995E0DFAA2C9EBD565A0CE /* 26-Tahoe-Light.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 291E1C70746A0A95D0749F9C /* 26-Tahoe-Light.jpeg */; };
 		6C1C2814082035CEA69959AD /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94AC1BE37AE2D58BEA298128 /* ToolbarView.swift */; };
 		79E490F2C6076BD6F72F4046 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C844CB3520A6A8145AD310D /* ContentView.swift */; };
 		80209876B9300E84984C9ECC /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 871AAEE7B4468B6AEBAC772F /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg */; };
@@ -30,6 +32,7 @@
 		A3EE7B0480EC8FE9BC1F921A /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8E6DF2A4AEE91DA5813B8B26 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */; };
 		C61D3DB5D2C5F4ABA030F825 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B9BFA4BCB64C5AC2108AD270 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg */; };
 		CAE9D98B584174B1FEF26AE9 /* WindowPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077551456F714D491D58EB1 /* WindowPicker.swift */; };
+		D513742AF40B22DAA550FE1F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 889B3479277E233F0ECC878A /* Assets.xcassets */; };
 		D9EF52E8250284D272B6AF69 /* PennyWiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16CE3C53AA197EBC281E99A /* PennyWiseApp.swift */; };
 		DCB8258AFA498DBCA42BBCFB /* Glass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D985ED434482C70F26945 /* Glass.swift */; };
 		E56AA6E77E40B00F7D409809 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7331FF2CB03B5E5FA38A6E04 /* Permissions.swift */; };
@@ -43,6 +46,7 @@
 /* Begin PBXFileReference section */
 		2530C59F268EA46EEF09B472 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg"; sourceTree = "<group>"; };
 		29001FC9398DF65EEA8345A3 /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg; sourceTree = "<group>"; };
+		291E1C70746A0A95D0749F9C /* 26-Tahoe-Light.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "26-Tahoe-Light.jpeg"; sourceTree = "<group>"; };
 		34850990797E85411F010B50 /* FFmpegCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFmpegCompressor.swift; sourceTree = "<group>"; };
 		3E9CED0AFA81CD86BA272EBC /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		4E2A66581699CC4A12D31F39 /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg; sourceTree = "<group>"; };
@@ -53,7 +57,9 @@
 		7331FF2CB03B5E5FA38A6E04 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
 		7E1574A42E5309D727205741 /* CameraCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureManager.swift; sourceTree = "<group>"; };
 		8408F4AF6C61F38E414FBB80 /* AudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixer.swift; sourceTree = "<group>"; };
+		850B487370B3B4852568944E /* 26-Tahoe-Dark.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "26-Tahoe-Dark.jpeg"; sourceTree = "<group>"; };
 		871AAEE7B4468B6AEBAC772F /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg; sourceTree = "<group>"; };
+		889B3479277E233F0ECC878A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		898679C3663B231724E715A0 /* Wise_Tapestry_Platform_Full_Lg_v2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_Platform_Full_Lg_v2.jpg; sourceTree = "<group>"; };
 		8A9D985ED434482C70F26945 /* Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glass.swift; sourceTree = "<group>"; };
 		8E6DF2A4AEE91DA5813B8B26 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg; sourceTree = "<group>"; };
@@ -79,6 +85,8 @@
 		1D688AC64790FC7C8B3B2C1E /* Tapestries */ = {
 			isa = PBXGroup;
 			children = (
+				850B487370B3B4852568944E /* 26-Tahoe-Dark.jpeg */,
+				291E1C70746A0A95D0749F9C /* 26-Tahoe-Light.jpeg */,
 				61CA86D26A062918D28F7F4F /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg */,
 				4E2A66581699CC4A12D31F39 /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg */,
 				B9BFA4BCB64C5AC2108AD270 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg */,
@@ -133,6 +141,7 @@
 		B2DC448CBBBDB36AE2D957D8 = {
 			isa = PBXGroup;
 			children = (
+				889B3479277E233F0ECC878A /* Assets.xcassets */,
 				690A4B40BD56E6D6F4DA4E7B /* Sources */,
 				6059CEFC64443B4C126BB99E /* Products */,
 			);
@@ -198,6 +207,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40E45FEF3AD407515641BEBA /* 26-Tahoe-Dark.jpeg in Resources */,
+				6A995E0DFAA2C9EBD565A0CE /* 26-Tahoe-Light.jpeg in Resources */,
+				D513742AF40B22DAA550FE1F /* Assets.xcassets in Resources */,
 				373B43D512997D18941D0554 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg in Resources */,
 				F6531D1C44193F13BBAA21EB /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg in Resources */,
 				C61D3DB5D2C5F4ABA030F825 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg in Resources */,
@@ -317,7 +329,7 @@
 		2AC29361D3DCD3D11C0C78C4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PennyWise.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_APP_SANDBOX = NO;
@@ -400,7 +412,7 @@
 		FC81D03184B666701E7679F9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PennyWise.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_APP_SANDBOX = NO;

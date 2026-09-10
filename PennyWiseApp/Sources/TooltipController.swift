@@ -39,48 +39,36 @@ final class TooltipController: ObservableObject {
 
     // MARK: Public API
 
-    /// Show a tooltip for a button whose frame is expressed in SwiftUI's
-    /// `.global` coordinate space (relative to the hosting view, Y↓).
-    func show(text: String, buttonGlobalFrame: CGRect) {
-        guard let hostView, let window = hostView.window else { return }
-
+    /// Show a tooltip next to the mouse cursor. The `buttonGlobalFrame` is no
+    /// longer needed for positioning — anchoring to the cursor avoids all
+    /// view→window→screen coordinate conversion, which was the source of the
+    /// off-screen bug.
+    func show(text: String, buttonGlobalFrame: CGRect = .zero) {
         ensurePanelExists()
 
-        // Update label
+        // Update label + measure.
         hostingView?.rootView = TooltipBubble(text: text)
-
-        // Measure tooltip after content update
         let size = measureTooltip(text: text)
 
-        // ── Coordinate conversion (robust, via AppKit) ────────────────────
-        // NSHostingView is flipped (top-left origin, Y↓), matching SwiftUI's
-        // `.global` space — so the rect maps straight into hostView coords.
-        // Convert view → window → screen with AppKit, which correctly handles
-        // the view's actual geometry within the window.
-        let inView = buttonGlobalFrame
-        let inWindow = hostView.convert(inView, to: nil)      // view → window
-        let buttonScreen = window.convertToScreen(inWindow)   // window → screen
+        // Cursor position is already in screen coordinates (bottom-left origin).
+        let mouse = NSEvent.mouseLocation
+        let screen = (NSScreen.screens.first { $0.frame.contains(mouse) }
+                      ?? NSScreen.main)?.visibleFrame ?? .zero
 
         // ── Side selection ───────────────────────────────────────────────
-        // Put the tooltip on whichever side has room. Prefer the right, but if
-        // it wouldn't fit (toolbar docked near the right edge) flip to the
-        // left. If neither side fits, pick the side with more room.
-        let screen     = window.screen?.visibleFrame ?? hostPanel?.screen?.visibleFrame ?? NSScreen.main?.visibleFrame ?? .zero
-        let gap: CGFloat = 8
-        let spaceRight = screen.maxX - buttonScreen.maxX
-        let spaceLeft  = buttonScreen.minX - screen.minX
-        let fitsRight  = spaceRight >= size.width + gap
-        let fitsLeft   = spaceLeft  >= size.width + gap
-        let showOnRight = fitsRight || (!fitsLeft && spaceRight >= spaceLeft)
-
-        var x = showOnRight
-            ? buttonScreen.maxX + gap
-            : buttonScreen.minX - size.width - gap
-        var y = buttonScreen.midY - size.height / 2
+        // Place to the RIGHT of the cursor by default; flip LEFT when the
+        // toolbar is docked near the right edge and it wouldn't fit.
+        let gap: CGFloat = 16
+        var x = mouse.x + gap
+        if x + size.width > screen.maxX - 4 {
+            x = mouse.x - size.width - gap
+        }
+        // Vertically center on the cursor.
+        var y = mouse.y - size.height / 2
 
         // Clamp fully on-screen on both axes.
-        x = min(max(x, screen.minX + 2), screen.maxX - size.width - 2)
-        y = min(max(y, screen.minY + 2), screen.maxY - size.height - 2)
+        x = min(max(x, screen.minX + 4), screen.maxX - size.width - 4)
+        y = min(max(y, screen.minY + 4), screen.maxY - size.height - 4)
 
         tooltipPanel?.setContentSize(size)
         tooltipPanel?.setFrameOrigin(NSPoint(x: x, y: y))

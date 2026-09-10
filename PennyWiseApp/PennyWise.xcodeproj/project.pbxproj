@@ -34,6 +34,7 @@
 		E75720F2B2F545ECE5992B70 /* CameraCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1574A42E5309D727205741 /* CameraCaptureManager.swift */; };
 		F4B152A08F7A895195533C7C /* AudioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8408F4AF6C61F38E414FBB80 /* AudioMixer.swift */; };
 		F6531D1C44193F13BBAA21EB /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4E2A66581699CC4A12D31F39 /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg */; };
+		FB32C374A01A1D7B393FF3D3 /* AppLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90276C3AAD6C62131B6BFC9B /* AppLog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		871AAEE7B4468B6AEBAC772F /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg; sourceTree = "<group>"; };
 		898679C3663B231724E715A0 /* Wise_Tapestry_Platform_Full_Lg_v2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_Platform_Full_Lg_v2.jpg; sourceTree = "<group>"; };
 		8E6DF2A4AEE91DA5813B8B26 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg; sourceTree = "<group>"; };
+		90276C3AAD6C62131B6BFC9B /* AppLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLog.swift; sourceTree = "<group>"; };
 		92FE49798D62F36FBF4C1D70 /* VideoCompositor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompositor.swift; sourceTree = "<group>"; };
 		94AC1BE37AE2D58BEA298128 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		94F4B71074DE5A9585A18F4D /* TooltipController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipController.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 		690A4B40BD56E6D6F4DA4E7B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				90276C3AAD6C62131B6BFC9B /* AppLog.swift */,
 				8408F4AF6C61F38E414FBB80 /* AudioMixer.swift */,
 				3E9CED0AFA81CD86BA272EBC /* Background.swift */,
 				7E1574A42E5309D727205741 /* CameraCaptureManager.swift */,
@@ -207,6 +210,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB32C374A01A1D7B393FF3D3 /* AppLog.swift in Sources */,
 				F4B152A08F7A895195533C7C /* AudioMixer.swift in Sources */,
 				300AFD27DC0469969FC0231E /* Background.swift in Sources */,
 				E75720F2B2F545ECE5992B70 /* CameraCaptureManager.swift in Sources */,

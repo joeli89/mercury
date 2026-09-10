@@ -214,6 +214,28 @@ final class RecordingController: ObservableObject {
 
         let url = outputFolder.appendingPathComponent(Self.newFilename())
 
+        // ── Log the recording settings ────────────────────────────────────
+        let sourceDesc: String
+        switch captureSource {
+        case .display:
+            sourceDesc = "Display \(selectedDisplay!.displayID) (\(selectedDisplay!.width)×\(selectedDisplay!.height))"
+        case .window:
+            sourceDesc = "Window \"\(pickedWindowName ?? "?")\""
+        }
+        AppLog.log("""
+
+        ════════ PennyWise recording ════════
+        \(AppLog.timestamp())
+        File:          \(url.lastPathComponent)
+        Source:        \(sourceDesc)
+        Capture:       \(width)×\(height) @ \(fps)fps  (scale \(captureScale.rawValue))
+        Camera:        \(useCamera ? "on (size \(String(format: "%.2f", cameraWidthFraction)))" : "off")
+        Microphone:    \(useMic ? "on" : "off")
+        System audio:  \(useSystemAudio ? "on" : "off")
+        Background:    \(background.name) (padding \(backgroundPadding.rawValue))
+        Compression:   \(compressOutput ? compressionQuality.rawValue : "off")
+        """)
+
         do {
             let writer = try MovieWriter(url: url, width: width, height: height, fps: fps, hasAudio: hasAudio)
             writer.prepare()
@@ -303,25 +325,27 @@ final class RecordingController: ObservableObject {
 
         switch result {
         case .success(let url):
+            let rawSize = (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int) ?? 0
+            AppLog.log("Raw file:      \(AppLog.size(rawSize)) written")
             if compressOutput {
-                await compressFile(url)
+                await compressFile(url, rawSize: rawSize)
             } else {
                 lastOutputURL = url
                 status = "Saved to \(url.lastPathComponent)"
+                AppLog.log("Compression:   off — final \(AppLog.size(rawSize))\n═════════════════════════════════════")
                 NSWorkspace.shared.activateFileViewerSelecting([url])
             }
         case .failure(let error):
             status = "Save failed: \(error.localizedDescription)"
+            AppLog.log("Save FAILED:    \(error.localizedDescription)\n═════════════════════════════════════")
         case .none:
             status = "Stopped."
         }
     }
 
-    private func compressFile(_ url: URL) async {
+    private func compressFile(_ url: URL, rawSize: Int) async {
         isCompressing = true
         compressionProgress = 0
-
-        let rawSize = (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int) ?? 0
         status = "Compressing… 0%"
 
         let compressor = FFmpegCompressor(quality: compressionQuality, fps: fps)
@@ -332,21 +356,30 @@ final class RecordingController: ObservableObject {
                 self?.status = "Compressing… \(Int(frac * 100))%"
             }
         }
+        AppLog.log("Encoder:       \(compressor.settingsSummary)")
 
+        let t0 = Date()
         do {
             let output = try await Task.detached {
                 try await compressor.compress(url)
             }.value
 
+            let encodeSeconds = Date().timeIntervalSince(t0)
             let compressedSize = (try? FileManager.default.attributesOfItem(atPath: output.path)[.size] as? Int) ?? 0
-            let ratio = rawSize > 0 ? String(format: "%.0f%%", Double(compressedSize) / Double(rawSize) * 100) : "?"
-            let sizeMB = String(format: "%.1f MB", Double(compressedSize) / 1_048_576)
+            let ratioPct = rawSize > 0 ? Double(compressedSize) / Double(rawSize) * 100 : 0
+            let saved = max(0, rawSize - compressedSize)
             lastOutputURL = output
-            status = "Saved \(output.lastPathComponent) — \(sizeMB) (\(ratio) of original)"
+            status = "Saved \(output.lastPathComponent) — \(AppLog.size(compressedSize)) (\(String(format: "%.0f%%", ratioPct)) of original)"
+            AppLog.log("""
+            Compressed:    \(AppLog.size(compressedSize)) (\(String(format: "%.1f%%", ratioPct)) of raw, saved \(AppLog.size(saved)))
+            Encode time:   \(String(format: "%.1fs", encodeSeconds))
+            ═════════════════════════════════════
+            """)
             NSWorkspace.shared.activateFileViewerSelecting([output])
         } catch {
             lastOutputURL = url
             status = "Compression failed: \(error.localizedDescription)"
+            AppLog.log("Compression FAILED: \(error.localizedDescription)\n═════════════════════════════════════")
         }
 
         activeCompressor = nil

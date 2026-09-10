@@ -55,6 +55,11 @@ final class FFmpegCompressor: @unchecked Sendable {
         self.fps = fps
     }
 
+    /// One-line description of the encoder configuration (for logging).
+    var settingsSummary: String {
+        "libx265 crf=\(quality.crf) preset=\(quality.preset) 10-bit(yuv420p10le) [\(x265Params)]"
+    }
+
     /// Screen-content-tuned x265 params.
     /// - Long GOP (10s) + closed GOP: screen frames are near-identical between
     ///   keyframes, so spreading keyframes far apart is a big size win while

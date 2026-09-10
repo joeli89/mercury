@@ -51,6 +51,7 @@ struct ToolbarView: View {
     private func tipText(for id: String) -> String? {
         switch id {
         case "record":   return "Record"
+        case "discard":  return "Discard"
         case "window":   return "Window"
         case "camera":   return controller.enableCamera ? "Camera on" : "Camera off"
         case "bg":       return "Background"
@@ -64,21 +65,18 @@ struct ToolbarView: View {
 
     private var pill: some View {
         VStack(spacing: 6) {
-            // Record / Stop
-            recordButton
+            if controller.isCompressing {
+                compressingIndicator
+            } else {
+                // Record / Stop
+                recordButton
 
-            if controller.isRecording {
-                Text(controller.elapsedString)
-                    .font(.system(size: 10, weight: .medium, design: .monospaced))
-                    .foregroundStyle(.white.opacity(0.7))
-            } else if controller.isCompressing {
-                ProgressView(value: controller.compressionProgress)
-                    .progressViewStyle(.linear)
-                    .frame(width: 30)
-                    .tint(.orange)
-                Text("\(Int(controller.compressionProgress * 100))%")
-                    .font(.system(size: 9, weight: .medium, design: .monospaced))
-                    .foregroundStyle(.orange.opacity(0.9))
+                if controller.isRecording {
+                    Text(controller.elapsedString)
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundStyle(.white.opacity(0.7))
+                    discardButton
+                }
             }
 
             divider
@@ -115,7 +113,7 @@ struct ToolbarView: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 14)
-        .background(.ultraThickMaterial, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .liquidGlass(in: RoundedRectangle(cornerRadius: 22, style: .continuous))
     }
 
     /// Show the status card only for actionable messages (not idle / recording).
@@ -133,7 +131,7 @@ struct ToolbarView: View {
             .frame(maxWidth: 180, alignment: .leading)
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
-            .background(.ultraThickMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .liquidGlass(in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
     // MARK: - Subviews
@@ -187,6 +185,51 @@ struct ToolbarView: View {
         .onHover { inside in hovered = inside ? "camera" : nil }
         .animation(.easeOut(duration: 0.15), value: hovered)
         .background(frameTracker(id: "camera"))
+    }
+
+    /// Discard the in-progress recording without saving (Loom-style trash).
+    private var discardButton: some View {
+        Button {
+            Task { await controller.cancel() }
+        } label: {
+            Image(systemName: "trash")
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(.white.opacity(hovered == "discard" ? 1.0 : 0.6))
+                .frame(width: 28, height: 24)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .onHover { inside in hovered = inside ? "discard" : nil }
+        .scaleEffect(hovered == "discard" ? 1.12 : 1.0)
+        .animation(.easeOut(duration: 0.15), value: hovered)
+    }
+
+    /// Clear "processing" state shown in place of the record button while the
+    /// recording is being compressed — a progress ring with the % inside plus
+    /// a "Saving" caption, so it's obvious the file isn't ready yet.
+    private var compressingIndicator: some View {
+        VStack(spacing: 7) {
+            ZStack {
+                Circle()
+                    .stroke(.white.opacity(0.15), lineWidth: 3)
+                Circle()
+                    .trim(from: 0, to: max(0.02, controller.compressionProgress))
+                    .stroke(.orange, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                    .animation(.easeOut(duration: 0.2), value: controller.compressionProgress)
+                Text("\(Int(controller.compressionProgress * 100))")
+                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.orange)
+            }
+            .frame(width: 40, height: 40)
+
+            Text("Saving")
+                .font(.system(size: 8, weight: .semibold))
+                .textCase(.uppercase)
+                .foregroundStyle(.orange.opacity(0.9))
+        }
+        .frame(width: 42)
+        .help("Compressing recording…")
     }
 
     private var backgroundSwatchButton: some View {

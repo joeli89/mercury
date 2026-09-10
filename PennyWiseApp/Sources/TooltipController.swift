@@ -12,8 +12,7 @@ struct TooltipBubble: View {
             .fixedSize()
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .background(.ultraThickMaterial,
-                        in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+            .liquidGlass(in: RoundedRectangle(cornerRadius: 8, style: .continuous))
             .preferredColorScheme(.dark)
     }
 }

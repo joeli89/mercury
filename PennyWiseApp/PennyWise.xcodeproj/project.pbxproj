@@ -15,6 +15,7 @@
 		300AFD27DC0469969FC0231E /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9CED0AFA81CD86BA272EBC /* Background.swift */; };
 		373B43D512997D18941D0554 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 61CA86D26A062918D28F7F4F /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg */; };
 		3E13AD7E7EFBE18FF9FB0E05 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369C03C626A504B52E5DB0D /* FloatingPanel.swift */; };
+		41DE970EA07570CE4167F672 /* CountdownController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7619E49E8613850A73C62A8 /* CountdownController.swift */; };
 		595F7A4F5F944C84E8C22B2A /* VideoCompositor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92FE49798D62F36FBF4C1D70 /* VideoCompositor.swift */; };
 		5D9345290A4B0035DB2F85B3 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2530C59F268EA46EEF09B472 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg */; };
 		6C1C2814082035CEA69959AD /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94AC1BE37AE2D58BEA298128 /* ToolbarView.swift */; };
@@ -29,6 +30,7 @@
 		C61D3DB5D2C5F4ABA030F825 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B9BFA4BCB64C5AC2108AD270 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg */; };
 		CAE9D98B584174B1FEF26AE9 /* WindowPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077551456F714D491D58EB1 /* WindowPicker.swift */; };
 		D9EF52E8250284D272B6AF69 /* PennyWiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16CE3C53AA197EBC281E99A /* PennyWiseApp.swift */; };
+		DCB8258AFA498DBCA42BBCFB /* Glass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D985ED434482C70F26945 /* Glass.swift */; };
 		E56AA6E77E40B00F7D409809 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7331FF2CB03B5E5FA38A6E04 /* Permissions.swift */; };
 		E664CA189FB04B9CD64F5759 /* TooltipController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4B71074DE5A9585A18F4D /* TooltipController.swift */; };
 		E75720F2B2F545ECE5992B70 /* CameraCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1574A42E5309D727205741 /* CameraCaptureManager.swift */; };
@@ -52,6 +54,7 @@
 		8408F4AF6C61F38E414FBB80 /* AudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixer.swift; sourceTree = "<group>"; };
 		871AAEE7B4468B6AEBAC772F /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg; sourceTree = "<group>"; };
 		898679C3663B231724E715A0 /* Wise_Tapestry_Platform_Full_Lg_v2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_Platform_Full_Lg_v2.jpg; sourceTree = "<group>"; };
+		8A9D985ED434482C70F26945 /* Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glass.swift; sourceTree = "<group>"; };
 		8E6DF2A4AEE91DA5813B8B26 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg; sourceTree = "<group>"; };
 		90276C3AAD6C62131B6BFC9B /* AppLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLog.swift; sourceTree = "<group>"; };
 		92FE49798D62F36FBF4C1D70 /* VideoCompositor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompositor.swift; sourceTree = "<group>"; };
@@ -63,6 +66,7 @@
 		C0A07A836A005B8D4AC49C0E /* CameraPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewController.swift; sourceTree = "<group>"; };
 		D16CE3C53AA197EBC281E99A /* PennyWiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PennyWiseApp.swift; sourceTree = "<group>"; };
 		E369C03C626A504B52E5DB0D /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
+		E7619E49E8613850A73C62A8 /* CountdownController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownController.swift; sourceTree = "<group>"; };
 		EAECABDE1A51792B29A39CCE /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg; sourceTree = "<group>"; };
 		EEB427FDA62F6B1D059189D6 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg; sourceTree = "<group>"; };
 		F80F5740B5EAE882982AE665 /* MovieWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieWriter.swift; sourceTree = "<group>"; };
@@ -105,8 +109,10 @@
 				7E1574A42E5309D727205741 /* CameraCaptureManager.swift */,
 				C0A07A836A005B8D4AC49C0E /* CameraPreviewController.swift */,
 				9C844CB3520A6A8145AD310D /* ContentView.swift */,
+				E7619E49E8613850A73C62A8 /* CountdownController.swift */,
 				34850990797E85411F010B50 /* FFmpegCompressor.swift */,
 				E369C03C626A504B52E5DB0D /* FloatingPanel.swift */,
+				8A9D985ED434482C70F26945 /* Glass.swift */,
 				F80F5740B5EAE882982AE665 /* MovieWriter.swift */,
 				D16CE3C53AA197EBC281E99A /* PennyWiseApp.swift */,
 				7331FF2CB03B5E5FA38A6E04 /* Permissions.swift */,
@@ -216,8 +222,10 @@
 				E75720F2B2F545ECE5992B70 /* CameraCaptureManager.swift in Sources */,
 				9E9665C8019EB96875D7E12C /* CameraPreviewController.swift in Sources */,
 				79E490F2C6076BD6F72F4046 /* ContentView.swift in Sources */,
+				41DE970EA07570CE4167F672 /* CountdownController.swift in Sources */,
 				2031FF561BD8504AEEB93BBF /* FFmpegCompressor.swift in Sources */,
 				3E13AD7E7EFBE18FF9FB0E05 /* FloatingPanel.swift in Sources */,
+				DCB8258AFA498DBCA42BBCFB /* Glass.swift in Sources */,
 				141BD4ADCFED30BC9773940D /* MovieWriter.swift in Sources */,
 				D9EF52E8250284D272B6AF69 /* PennyWiseApp.swift in Sources */,
 				E56AA6E77E40B00F7D409809 /* Permissions.swift in Sources */,

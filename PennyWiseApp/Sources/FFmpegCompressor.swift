@@ -87,12 +87,16 @@ final class FFmpegCompressor: @unchecked Sendable {
 
     // MARK: - Public
 
-    /// Compress `input` → a new file next to it, then replace the original.
-    /// Returns the final URL (same path, smaller file) on success.
+    /// Compress `input` → `output`. The input file is left untouched (the
+    /// caller owns it, typically a temp file it deletes afterwards).
+    /// Returns `output` on success.
     @discardableResult
-    func compress(_ input: URL) async throws -> URL {
-        let tmp = input.deletingLastPathComponent()
-            .appendingPathComponent(".\(input.deletingPathExtension().lastPathComponent)-compressed.mp4")
+    func compress(_ input: URL, to output: URL) async throws -> URL {
+        // Encode to a hidden sibling of `output` first, then move into place —
+        // so a partial file never appears at the destination.
+        let tmp = output.deletingLastPathComponent()
+            .appendingPathComponent(".\(output.deletingPathExtension().lastPathComponent)-encoding.mp4")
+        try? FileManager.default.removeItem(at: tmp)
 
         // Probe duration for progress calculation.
         let duration = try await probeDuration(of: input)
@@ -184,12 +188,12 @@ final class FFmpegCompressor: @unchecked Sendable {
             throw CompressorError.ffmpegFailed(code: Int(proc.terminationStatus), stderr: stderr)
         }
 
-        // Swap: remove original, rename compressed to original path.
-        try FileManager.default.removeItem(at: input)
-        try FileManager.default.moveItem(at: tmp, to: input)
+        // Move the finished encode into the destination.
+        try? FileManager.default.removeItem(at: output)
+        try FileManager.default.moveItem(at: tmp, to: output)
 
         onProgress?(1.0)
-        return input
+        return output
     }
 
     func cancel() {

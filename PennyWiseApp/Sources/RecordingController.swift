@@ -83,6 +83,12 @@ final class RecordingController: ObservableObject {
     private var timer: Timer?
     private var startDate: Date?
     private var activeCompressor: FFmpegCompressor?
+    /// Where the finished file should end up (compression may route through temp).
+    private var pendingFinalURL: URL?
+    private let countdown = CountdownController()
+
+    /// True while the 3-2-1 countdown is showing (before capture begins).
+    @Published var isCountingDown = false
 
     // MARK: - Device discovery
 
@@ -160,7 +166,7 @@ final class RecordingController: ObservableObject {
     // MARK: - Recording
 
     func start() async {
-        guard !isRecording else { return }
+        guard !isRecording, !isCountingDown else { return }
 
         // In window mode, make sure we have a window chosen; present the native
         // picker if not (this is the click-to-select flow).
@@ -212,7 +218,21 @@ final class RecordingController: ObservableObject {
             height = min(maxH, max(2, Int((rect.height * scale).rounded())))
         }
 
-        let url = outputFolder.appendingPathComponent(Self.newFilename())
+        // Loom-style 3-2-1 countdown before capture begins (so it isn't
+        // recorded). Bail out if the user isn't recording anymore.
+        isCountingDown = true
+        status = "Get ready…"
+        await countdown.run(from: 3)
+        isCountingDown = false
+
+        // When compressing, record the raw file to a temp location so the
+        // output folder only ever contains the finished (compressed) file.
+        let filename = Self.newFilename()
+        let finalURL = outputFolder.appendingPathComponent(filename)
+        let url = compressOutput
+            ? FileManager.default.temporaryDirectory.appendingPathComponent(filename)
+            : finalURL
+        pendingFinalURL = finalURL
 
         // ── Log the recording settings ────────────────────────────────────
         let sourceDesc: String
@@ -307,6 +327,25 @@ final class RecordingController: ObservableObject {
         }
     }
 
+    /// Stop capture and discard the recording without saving or compressing.
+    func cancel() async {
+        guard isRecording else { return }
+        isRecording = false
+        timer?.invalidate(); timer = nil
+
+        await screen?.stop()
+        cameraManager.onFrame = nil
+        if !enableCamera { cameraManager.stop() }
+        mixer?.finish()
+
+        // Abort the writer and delete its file (temp or output).
+        await writer?.cancel()
+        await teardown()
+
+        status = "Recording discarded."
+        AppLog.log("Discarded:     recording cancelled by user\n═════════════════════════════════════")
+    }
+
     func stop() async {
         guard isRecording else { return }
         status = "Finishing…"
@@ -327,13 +366,14 @@ final class RecordingController: ObservableObject {
         case .success(let url):
             let rawSize = (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int) ?? 0
             AppLog.log("Raw file:      \(AppLog.size(rawSize)) written")
+            let finalURL = pendingFinalURL ?? url
             if compressOutput {
-                await compressFile(url, rawSize: rawSize)
+                await compressFile(url, to: finalURL, rawSize: rawSize)
             } else {
                 lastOutputURL = url
                 status = "Saved to \(url.lastPathComponent)"
                 AppLog.log("Compression:   off — final \(AppLog.size(rawSize))\n═════════════════════════════════════")
-                NSWorkspace.shared.activateFileViewerSelecting([url])
+                Self.revealInFinder(url)
             }
         case .failure(let error):
             status = "Save failed: \(error.localizedDescription)"
@@ -343,7 +383,7 @@ final class RecordingController: ObservableObject {
         }
     }
 
-    private func compressFile(_ url: URL, rawSize: Int) async {
+    private func compressFile(_ input: URL, to output: URL, rawSize: Int) async {
         isCompressing = true
         compressionProgress = 0
         status = "Compressing… 0%"
@@ -360,25 +400,30 @@ final class RecordingController: ObservableObject {
 
         let t0 = Date()
         do {
-            let output = try await Task.detached {
-                try await compressor.compress(url)
+            let result = try await Task.detached {
+                try await compressor.compress(input, to: output)
             }.value
 
+            // Remove the temp raw file (if it was routed through temp).
+            if input != output { try? FileManager.default.removeItem(at: input) }
+
             let encodeSeconds = Date().timeIntervalSince(t0)
-            let compressedSize = (try? FileManager.default.attributesOfItem(atPath: output.path)[.size] as? Int) ?? 0
+            let compressedSize = (try? FileManager.default.attributesOfItem(atPath: result.path)[.size] as? Int) ?? 0
             let ratioPct = rawSize > 0 ? Double(compressedSize) / Double(rawSize) * 100 : 0
             let saved = max(0, rawSize - compressedSize)
-            lastOutputURL = output
-            status = "Saved \(output.lastPathComponent) — \(AppLog.size(compressedSize)) (\(String(format: "%.0f%%", ratioPct)) of original)"
+            lastOutputURL = result
+            status = "Saved \(result.lastPathComponent) — \(AppLog.size(compressedSize)) (\(String(format: "%.0f%%", ratioPct)) of original)"
             AppLog.log("""
             Compressed:    \(AppLog.size(compressedSize)) (\(String(format: "%.1f%%", ratioPct)) of raw, saved \(AppLog.size(saved)))
             Encode time:   \(String(format: "%.1fs", encodeSeconds))
             ═════════════════════════════════════
             """)
-            NSWorkspace.shared.activateFileViewerSelecting([output])
+            Self.revealInFinder(result)
         } catch {
-            lastOutputURL = url
-            status = "Compression failed: \(error.localizedDescription)"
+            // On failure, salvage the raw recording by moving it to the output.
+            if input != output { try? FileManager.default.moveItem(at: input, to: output) }
+            lastOutputURL = FileManager.default.fileExists(atPath: output.path) ? output : input
+            status = "Compression failed (kept raw): \(error.localizedDescription)"
             AppLog.log("Compression FAILED: \(error.localizedDescription)\n═════════════════════════════════════")
         }
 
@@ -399,6 +444,17 @@ final class RecordingController: ObservableObject {
     }
 
     // MARK: - Helpers
+
+    /// Reveal a file in Finder and bring Finder to the front. `activateFileViewerSelecting`
+    /// alone can leave the Finder window behind since PennyWise is a
+    /// non-activating panel app, so we explicitly activate Finder too.
+    static func revealInFinder(_ url: URL) {
+        NSWorkspace.shared.activateFileViewerSelecting([url])
+        if let finder = NSRunningApplication.runningApplications(
+            withBundleIdentifier: "com.apple.finder").first {
+            finder.activate(options: [.activateAllWindows])
+        }
+    }
 
     static func newFilename() -> String {
         let f = DateFormatter()

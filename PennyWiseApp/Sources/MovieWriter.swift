@@ -91,6 +91,20 @@ final class MovieWriter {
         }
     }
 
+    /// Abort writing and delete the output file (used to discard a recording).
+    func cancel() async {
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            queue.async {
+                self.finished = true
+                if self.writer.status == .writing {
+                    self.writer.cancelWriting()
+                }
+                try? FileManager.default.removeItem(at: self.outputURL)
+                continuation.resume()
+            }
+        }
+    }
+
     func finish() async -> Result<URL, Error> {
         await withCheckedContinuation { (continuation: CheckedContinuation<Result<URL, Error>, Never>) in
             queue.async {

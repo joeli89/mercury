@@ -19,21 +19,23 @@ struct BackgroundOption: Identifiable, Hashable {
     /// Built-in presets shown in the picker.
     static let presets: [BackgroundOption] = {
         let none = BackgroundOption(id: "none", name: "None", style: .none)
-        let tapestries: [(id: String, name: String, file: String)] = [
-            ("tapestry_01", "UK & Europe",       "Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg"),
-            ("tapestry_02", "Australasia",        "Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg"),
-            ("tapestry_03", "Americas & E. Asia", "Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg"),
-            ("tapestry_04", "Europe & SE Asia",   "Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg"),
-            ("tapestry_05", "N. Europe & Africa", "Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg"),
-            ("tapestry_06", "The Americas",       "Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg"),
-            ("tapestry_07", "Pacific",            "Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg"),
-            ("tapestry_08", "Africa & Europe",    "Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg"),
-            ("tapestry_09", "Latin America",      "Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg"),
-            ("tapestry_10", "Middle East",        "Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg"),
-            ("tapestry_full", "Wise World",       "Wise_Tapestry_Platform_Full_Lg_v2"),
+        let tapestries: [(id: String, name: String, file: String, ext: String)] = [
+            ("tapestry_01", "UK & Europe",       "Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg",          "jpg"),
+            ("tapestry_02", "Australasia",        "Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg", "jpg"),
+            ("tapestry_03", "Americas & E. Asia", "Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg",     "jpg"),
+            ("tapestry_04", "Europe & SE Asia",   "Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg",      "jpg"),
+            ("tapestry_05", "N. Europe & Africa", "Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg",     "jpg"),
+            ("tapestry_06", "The Americas",       "Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg",     "jpg"),
+            ("tapestry_07", "Pacific",            "Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg", "jpg"),
+            ("tapestry_08", "Africa & Europe",    "Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg", "jpg"),
+            ("tapestry_09", "Latin America",      "Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg",  "jpg"),
+            ("tapestry_10", "Middle East",        "Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg", "jpg"),
+            ("tapestry_full", "Wise World",       "Wise_Tapestry_Platform_Full_Lg_v2",                  "jpg"),
+            ("tahoe_dark",  "Tahoe Dark",         "26-Tahoe-Dark",                                      "jpeg"),
+            ("tahoe_light", "Tahoe Light",        "26-Tahoe-Light",                                     "jpeg"),
         ]
         let imageOptions = tapestries.compactMap { t -> BackgroundOption? in
-            guard let url = Bundle.main.url(forResource: t.file, withExtension: "jpg") else { return nil }
+            guard let url = Bundle.main.url(forResource: t.file, withExtension: t.ext) else { return nil }
             return BackgroundOption(id: t.id, name: t.name, style: .image(url))
         }
         return [none] + imageOptions

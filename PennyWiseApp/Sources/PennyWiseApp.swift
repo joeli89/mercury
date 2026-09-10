@@ -16,6 +16,7 @@ struct PennyWiseApp: App {
 final class AppDelegate: NSObject, NSApplicationDelegate {
     let controller = RecordingController()
     let tooltipController = TooltipController()
+    let statusController = StatusController()
     let cameraPreview = CameraPreviewController()
     private var panel: FloatingPanel?
 
@@ -25,6 +26,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let toolbarView = ToolbarView()
             .environmentObject(controller)
             .environmentObject(tooltipController)
+            .environmentObject(statusController)
 
         let hosting = NSHostingView(rootView: toolbarView)
         hosting.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -47,6 +49,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // SwiftUI-global coordinates to screen coordinates via AppKit.
         tooltipController.hostPanel = panel
         tooltipController.hostView = hosting
+        statusController.hostPanel = panel
     }
 
     /// Keep the app running even when all windows close (the panel is our UI).

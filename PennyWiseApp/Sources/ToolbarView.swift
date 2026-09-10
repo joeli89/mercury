@@ -18,6 +18,7 @@ private struct ButtonFrameKey: PreferenceKey {
 struct ToolbarView: View {
     @EnvironmentObject var controller: RecordingController
     @EnvironmentObject var tooltipController: TooltipController
+    @EnvironmentObject var statusController: StatusController
 
     @State private var showSettings = false
     @State private var showBackgrounds = false
@@ -27,9 +28,6 @@ struct ToolbarView: View {
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             pill
-            if showStatus {
-                statusCard
-            }
         }
         .fixedSize()
         .preferredColorScheme(.dark)
@@ -43,6 +41,18 @@ struct ToolbarView: View {
             } else {
                 tooltipController.hide()
             }
+        }
+        // Drive the floating status panel (edge-aware, never clipped).
+        .onChange(of: controller.status) { _, _ in syncStatus() }
+        .onChange(of: controller.isRecording) { _, _ in syncStatus() }
+        .onChange(of: controller.isCompressing) { _, _ in syncStatus() }
+    }
+
+    private func syncStatus() {
+        if showStatus {
+            statusController.show(controller.status)
+        } else {
+            statusController.hide()
         }
     }
 
@@ -121,17 +131,6 @@ struct ToolbarView: View {
         !controller.isRecording &&
         controller.status != "Ready." &&
         !controller.status.isEmpty
-    }
-
-    private var statusCard: some View {
-        Text(controller.status)
-            .font(.system(size: 11))
-            .foregroundStyle(.white.opacity(0.85))
-            .lineLimit(3)
-            .frame(maxWidth: 180, alignment: .leading)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 10)
-            .liquidGlass(in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
     // MARK: - Subviews

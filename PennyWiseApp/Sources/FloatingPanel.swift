@@ -13,7 +13,12 @@ final class AutoSizingHostingView<Content: View>: NSHostingView<Content> {
 
     @MainActor required init(rootView: Content) {
         super.init(rootView: rootView)
-        sizingOptions = []   // don't let SwiftUI drive the window size
+        // Report the content's intrinsic size (so `fittingSize` is correct and
+        // the SwiftUI content actually lays out) but do NOT let SwiftUI drive
+        // the *window* size directly — that mutates the window during the
+        // CoreAnimation commit and crashes on macOS 26. We resize the window
+        // ourselves, asynchronously, from `layout()` via `onContentResize`.
+        sizingOptions = [.intrinsicContentSize]
     }
 
     @available(*, unavailable)

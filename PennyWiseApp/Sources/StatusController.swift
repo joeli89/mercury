@@ -7,14 +7,13 @@ struct StatusBubble: View {
     var body: some View {
         Text(text)
             .font(.system(size: 11))
-            .foregroundStyle(.white.opacity(0.85))
+            .foregroundStyle(.primary.opacity(0.85))
             .lineLimit(3)
             .frame(maxWidth: 200, alignment: .leading)
             .fixedSize(horizontal: false, vertical: true)
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
             .liquidGlass(in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-            .preferredColorScheme(.dark)
     }
 }
 

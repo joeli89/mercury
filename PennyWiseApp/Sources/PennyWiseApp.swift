@@ -28,7 +28,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             .environmentObject(tooltipController)
             .environmentObject(statusController)
 
-        let hosting = NSHostingView(rootView: toolbarView)
+        let hosting = AutoSizingHostingView(rootView: AnyView(toolbarView))
         hosting.setContentCompressionResistancePriority(.required, for: .horizontal)
         hosting.setContentCompressionResistancePriority(.required, for: .vertical)
 
@@ -44,6 +44,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         panel.orderFrontRegardless()
         self.panel = panel
+
+        // Resize the panel to fit content changes — asynchronously, so we never
+        // mutate the window during a display cycle (which crashes on macOS 26).
+        // Keep the top-left corner anchored so the pill grows downward.
+        hosting.onContentResize = { [weak panel] newSize in
+            guard let panel, let cv = panel.contentView, cv.frame.size != newSize else { return }
+            DispatchQueue.main.async {
+                let topLeft = NSPoint(x: panel.frame.minX, y: panel.frame.maxY)
+                panel.setContentSize(newSize)
+                panel.setFrameOrigin(NSPoint(x: topLeft.x, y: topLeft.y - panel.frame.height))
+            }
+        }
 
         // Give the tooltip controller references so it can convert
         // SwiftUI-global coordinates to screen coordinates via AppKit.

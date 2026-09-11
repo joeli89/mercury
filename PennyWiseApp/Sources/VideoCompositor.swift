@@ -8,9 +8,17 @@ import AppKit
 /// (solid / gradient / image) with the screen inset on top — rounded corners and
 /// a drop shadow, Screen Studio-style — plus an optional webcam bubble overlay.
 ///
+/// The output canvas is always a fixed 1920×1080 (Full HD) regardless of the
+/// captured source dimensions, so every recording is the same size.  Content is
+/// scaled to fit the padded canvas area (maintaining aspect ratio).
+///
 /// Everything that doesn't change frame-to-frame (background, shadow, rounded
 /// mask, content placement) is computed once and cached.
 final class VideoCompositor {
+    // MARK: - Fixed output canvas
+    static let canvasWidth  = 1920
+    static let canvasHeight = 1080
+
     private let ciContext: CIContext
     private let lock = NSLock()
     private var latestCamera: CIImage?
@@ -32,12 +40,14 @@ final class VideoCompositor {
     /// Cached, size-dependent layers.
     private var layout: Layout?
     private struct Layout {
-        let width: Int
-        let height: Int
-        let contentTransform: CGAffineTransform  // maps full-frame screen → inset content
+        let canvasWidth: Int
+        let canvasHeight: Int
+        let sourceWidth: Int
+        let sourceHeight: Int
+        let contentTransform: CGAffineTransform  // maps source → inset content on canvas
         let contentRect: CGRect
         let mask: CIImage                        // white rounded rect at contentRect
-        let backdrop: CIImage                    // background + shadow, full frame
+        let backdrop: CIImage                    // background + shadow, full canvas
     }
 
     init(showCamera: Bool,
@@ -63,19 +73,33 @@ final class VideoCompositor {
         let hasCamera = showCamera && cam != nil
         let hasBackground = !background.isNone
 
-        // Nothing to do → pass the source straight through.
-        guard hasCamera || hasBackground else { return src }
+        var srcW = CVPixelBufferGetWidth(src)
+        var srcH = CVPixelBufferGetHeight(src)
+        let cw = Self.canvasWidth
+        let ch = Self.canvasHeight
+        let frame = CGRect(x: 0, y: 0, width: cw, height: ch)
 
-        let w = CVPixelBufferGetWidth(src)
-        let h = CVPixelBufferGetHeight(src)
-        let frame = CGRect(x: 0, y: 0, width: w, height: h)
-        guard let out = makePixelBuffer(width: w, height: h) else { return src }
+        guard let out = makePixelBuffer(width: cw, height: ch) else { return src }
 
-        let base = CIImage(cvPixelBuffer: src)
+        var base = CIImage(cvPixelBuffer: src)
+
+        // Pre-scale sources larger than 2× the canvas. At extreme downscale
+        // factors CIImage's rendering pipeline can misplace the content; a two-
+        // step scale avoids that while preserving quality through supersampling.
+        let maxSrc = max(cw, ch) * 2
+        let srcMax = max(srcW, srcH)
+        if srcMax > maxSrc {
+            let ps = CGFloat(maxSrc) / CGFloat(srcMax)
+            base = base.transformed(by: CGAffineTransform(scaleX: ps, y: ps))
+            srcW = Int((CGFloat(srcW) * ps).rounded())
+            srcH = Int((CGFloat(srcH) * ps).rounded())
+        }
+
         var canvas: CIImage
 
         if hasBackground {
-            let layout = layoutFor(width: w, height: h)
+            let layout = layoutFor(canvasWidth: cw, canvasHeight: ch,
+                                   sourceWidth: srcW, sourceHeight: srcH)
             // Inset + rounded screen content.
             let content = base
                 .transformed(by: layout.contentTransform)
@@ -85,11 +109,21 @@ final class VideoCompositor {
                 ])
             canvas = content.composited(over: layout.backdrop)
         } else {
-            canvas = base
+            // No background: scale content to fill the canvas (letterboxed).
+            let fitScale = min(CGFloat(cw) / CGFloat(srcW),
+                               CGFloat(ch) / CGFloat(srcH))
+            let scaledW = CGFloat(srcW) * fitScale
+            let scaledH = CGFloat(srcH) * fitScale
+            let dx = (CGFloat(cw) - scaledW) / 2
+            let dy = (CGFloat(ch) - scaledH) / 2
+            let t = CGAffineTransform(scaleX: fitScale, y: fitScale)
+                .concatenating(CGAffineTransform(translationX: dx, y: dy))
+            canvas = base.transformed(by: t)
+                .composited(over: CIImage(color: .black).cropped(to: frame))
         }
 
         if hasCamera, let cam {
-            canvas = cameraOverlay(cam, frameWidth: w).composited(over: canvas)
+            canvas = cameraOverlay(cam, frameWidth: cw).composited(over: canvas)
         }
 
         canvas = canvas.cropped(to: frame)
@@ -145,15 +179,21 @@ final class VideoCompositor {
 
     // MARK: - Layout / static layers
 
-    private func layoutFor(width w: Int, height h: Int) -> Layout {
-        if let layout, layout.width == w, layout.height == h { return layout }
+    private func layoutFor(canvasWidth cw: Int, canvasHeight ch: Int,
+                           sourceWidth sw: Int, sourceHeight sh: Int) -> Layout {
+        if let layout, layout.canvasWidth == cw, layout.canvasHeight == ch,
+           layout.sourceWidth == sw, layout.sourceHeight == sh { return layout }
 
-        let fw = CGFloat(w), fh = CGFloat(h)
+        let fw = CGFloat(cw), fh = CGFloat(ch)
+        let srcW = CGFloat(sw), srcH = CGFloat(sh)
         let pad = paddingFraction * min(fw, fh)
-        // Contain the screen (same aspect as the frame) inside the padded rect.
-        let scale = min((fw - 2 * pad) / fw, (fh - 2 * pad) / fh)
-        let contentW = fw * scale
-        let contentH = fh * scale
+        let availW = fw - 2 * pad
+        let availH = fh - 2 * pad
+
+        // Scale source to fit within the padded area (maintain aspect ratio).
+        let scale = min(availW / srcW, availH / srcH)
+        let contentW = srcW * scale
+        let contentH = srcH * scale
         let originX = (fw - contentW) / 2
         let originY = (fh - contentH) / 2
         let contentRect = CGRect(x: originX, y: originY, width: contentW, height: contentH)
@@ -179,8 +219,10 @@ final class VideoCompositor {
 
         let backdrop = shadow.composited(over: bg).cropped(to: frame)
 
-        let layout = Layout(width: w, height: h, contentTransform: transform,
-                            contentRect: contentRect, mask: mask, backdrop: backdrop)
+        let layout = Layout(canvasWidth: cw, canvasHeight: ch,
+                            sourceWidth: sw, sourceHeight: sh,
+                            contentTransform: transform, contentRect: contentRect,
+                            mask: mask, backdrop: backdrop)
         self.layout = layout
         return layout
     }

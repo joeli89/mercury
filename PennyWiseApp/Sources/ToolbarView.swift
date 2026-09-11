@@ -30,7 +30,6 @@ struct ToolbarView: View {
             pill
         }
         .fixedSize()
-        .preferredColorScheme(.dark)
         .task { await controller.refreshDevices() }
         // Collect button frames reported from within the pill
         .onPreferenceChange(ButtonFrameKey.self) { buttonFrames = $0 }
@@ -64,9 +63,10 @@ struct ToolbarView: View {
         case "discard":  return "Discard"
         case "window":   return "Window"
         case "camera":   return controller.enableCamera ? "Camera on" : "Camera off"
+        case "mic":      return controller.enableMicrophone ? "Mic on" : "Mic off"
         case "bg":       return "Background"
         case "settings": return "Settings"
-        case "folder":   return "Reveal"
+        case "folder":   return "Show in Finder"
         default:         return nil
         }
     }
@@ -84,7 +84,7 @@ struct ToolbarView: View {
                 if controller.isRecording {
                     Text(controller.elapsedString)
                         .font(.system(size: 10, weight: .medium, design: .monospaced))
-                        .foregroundStyle(.white.opacity(0.7))
+                        .foregroundStyle(.primary.opacity(0.7))
                     discardButton
                 }
             }
@@ -99,6 +99,9 @@ struct ToolbarView: View {
             // Toggle webcam on/off
             cameraToggleButton
 
+            // Toggle microphone on/off
+            micToggleButton
+
             // Background swatch — shows current, opens picker
             backgroundSwatchButton
 
@@ -112,13 +115,9 @@ struct ToolbarView: View {
                     .frame(width: 380)
             }
 
-            // Reveal last recording
+            // Reveal last recording — accented CTA once a file exists.
             if controller.lastOutputURL != nil {
-                iconButton("folder", id: "folder") {
-                    if let url = controller.lastOutputURL {
-                        NSWorkspace.shared.activateFileViewerSelecting([url])
-                    }
-                }
+                revealButton
             }
         }
         .padding(.horizontal, 10)
@@ -129,6 +128,7 @@ struct ToolbarView: View {
     /// Show the status card only for actionable messages (not idle / recording).
     private var showStatus: Bool {
         !controller.isRecording &&
+        !controller.isCompressing &&          // the pill's ring already shows this
         controller.status != "Ready." &&
         !controller.status.isEmpty
     }
@@ -173,9 +173,11 @@ struct ToolbarView: View {
         } label: {
             Image(systemName: controller.enableCamera ? "video.fill" : "video.slash.fill")
                 .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(controller.enableCamera
-                                 ? .white.opacity(hovered == "camera" ? 1.0 : 0.85)
-                                 : .white.opacity(hovered == "camera" ? 0.7 : 0.4))
+                .foregroundStyle(Color.primary.opacity(
+                    controller.enableCamera
+                        ? (hovered == "camera" ? 1.0 : 0.85)
+                        : (hovered == "camera" ? 0.7 : 0.4)
+                ))
                 .frame(width: 36, height: 36)
                 .contentShape(Rectangle())
         }
@@ -186,6 +188,46 @@ struct ToolbarView: View {
         .background(frameTracker(id: "camera"))
     }
 
+    private var micToggleButton: some View {
+        Button {
+            controller.enableMicrophone.toggle()
+        } label: {
+            Image(systemName: controller.enableMicrophone ? "mic.fill" : "mic.slash.fill")
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(Color.primary.opacity(
+                    controller.enableMicrophone
+                        ? (hovered == "mic" ? 1.0 : 0.85)
+                        : (hovered == "mic" ? 0.7 : 0.4)
+                ))
+                .frame(width: 36, height: 36)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(controller.isRecording)
+        .onHover { inside in hovered = inside ? "mic" : nil }
+        .animation(.easeOut(duration: 0.15), value: hovered)
+        .background(frameTracker(id: "mic"))
+    }
+
+    /// Accented "Show in Finder" CTA shown once a recording exists.
+    private var revealButton: some View {
+        Button {
+            controller.revealLastRecording()
+        } label: {
+            Image(systemName: "folder.fill")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(.primary)
+                .frame(width: 34, height: 34)
+                .background(Color.accentColor, in: Circle())
+                .contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .onHover { inside in hovered = inside ? "folder" : nil }
+        .scaleEffect(hovered == "folder" ? 1.1 : 1.0)
+        .animation(.easeOut(duration: 0.15), value: hovered)
+        .background(frameTracker(id: "folder"))
+    }
+
     /// Discard the in-progress recording without saving (Loom-style trash).
     private var discardButton: some View {
         Button {
@@ -193,7 +235,7 @@ struct ToolbarView: View {
         } label: {
             Image(systemName: "trash")
                 .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(.white.opacity(hovered == "discard" ? 1.0 : 0.6))
+                .foregroundStyle(.primary.opacity(hovered == "discard" ? 1.0 : 0.6))
                 .frame(width: 28, height: 24)
                 .contentShape(Rectangle())
         }
@@ -210,7 +252,7 @@ struct ToolbarView: View {
         VStack(spacing: 7) {
             ZStack {
                 Circle()
-                    .stroke(.white.opacity(0.15), lineWidth: 3)
+                    .stroke(.primary.opacity(0.15), lineWidth: 3)
                 Circle()
                     .trim(from: 0, to: max(0.02, controller.compressionProgress))
                     .stroke(.orange, style: StrokeStyle(lineWidth: 3, lineCap: .round))
@@ -240,7 +282,7 @@ struct ToolbarView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 5, style: .continuous)
-                        .strokeBorder(.white.opacity(hovered == "bg" ? 0.6 : 0.3), lineWidth: 1)
+                        .strokeBorder(.primary.opacity(hovered == "bg" ? 0.6 : 0.3), lineWidth: 1)
                 )
                 .frame(width: 36, height: 36)
                 .contentShape(Rectangle())
@@ -279,7 +321,7 @@ struct ToolbarView: View {
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8, style: .continuous)
                                     .strokeBorder(
-                                        selected ? Color.accentColor : Color.white.opacity(0.2),
+                                        selected ? Color.accentColor : Color.primary.opacity(0.2),
                                         lineWidth: selected ? 2.5 : 1
                                     )
                             )
@@ -313,7 +355,7 @@ struct ToolbarView: View {
         Button(action: action) {
             Image(systemName: symbol)
                 .font(.system(size: 15, weight: .medium))
-                .foregroundStyle(.white.opacity(hovered == id ? 1.0 : 0.65))
+                .foregroundStyle(.primary.opacity(hovered == id ? 1.0 : 0.65))
                 .frame(width: 36, height: 36)
                 .contentShape(Rectangle())
         }
@@ -325,7 +367,7 @@ struct ToolbarView: View {
 
     private var divider: some View {
         Rectangle()
-            .fill(.white.opacity(0.12))
+            .fill(.primary.opacity(0.12))
             .frame(height: 1)
             .padding(.horizontal, 4)
     }

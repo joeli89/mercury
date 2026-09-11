@@ -8,12 +8,11 @@ struct TooltipBubble: View {
     var body: some View {
         Text(text)
             .font(.system(size: 11, weight: .medium))
-            .foregroundStyle(.white.opacity(0.85))
+            .foregroundStyle(.primary.opacity(0.85))
             .fixedSize()
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
             .liquidGlass(in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-            .preferredColorScheme(.dark)
     }
 }
 

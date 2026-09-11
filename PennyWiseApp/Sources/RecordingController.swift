@@ -195,11 +195,11 @@ final class RecordingController: ObservableObject {
         if useCamera { _ = await Permissions.ensureCamera() }
         if useMic { _ = await Permissions.ensureMicrophone() }
 
-        let width: Int
-        let height: Int
-        let scale = captureScale.factor
+        var width: Int
+        var height: Int
         switch captureSource {
         case .display:
+            let scale = captureScale.factor
             let display = selectedDisplay!
             let logicalW = CGFloat(display.width)
             let logicalH = CGFloat(display.height)
@@ -210,12 +210,16 @@ final class RecordingController: ObservableObject {
             width  = min(maxW, max(2, Int((logicalW * scale).rounded())))
             height = min(maxH, max(2, Int((logicalH * scale).rounded())))
         case .window:
+            // Capture at the window's logical dimensions (1× points).
+            // SCStream reliably fills the buffer at this size, regardless
+            // of the display's pixel density. Asking for non-native sizes
+            // (e.g. 2× on a 1× display) can leave empty padding in the
+            // buffer, causing the content to appear off-center on the
+            // fixed 1920×1080 canvas. Quality is excellent: a typical
+            // wide window (~3400 pts) provides ~2× supersampling.
             let rect = pickedWindowFilter!.contentRect
-            let nativeScale = CGFloat(pickedWindowFilter!.pointPixelScale)
-            let maxW = Int((rect.width * nativeScale).rounded())
-            let maxH = Int((rect.height * nativeScale).rounded())
-            width  = min(maxW, max(2, Int((rect.width * scale).rounded())))
-            height = min(maxH, max(2, Int((rect.height * scale).rounded())))
+            width  = max(2, Int(rect.width.rounded()))
+            height = max(2, Int(rect.height.rounded()))
         }
 
         // Loom-style 3-2-1 countdown before capture begins (so it isn't
@@ -249,6 +253,7 @@ final class RecordingController: ObservableObject {
         File:          \(url.lastPathComponent)
         Source:        \(sourceDesc)
         Capture:       \(width)×\(height) @ \(fps)fps  (scale \(captureScale.rawValue))
+        Output:        \(VideoCompositor.canvasWidth)×\(VideoCompositor.canvasHeight)
         Camera:        \(useCamera ? "on (size \(String(format: "%.2f", cameraWidthFraction)))" : "off")
         Microphone:    \(useMic ? "on" : "off")
         System audio:  \(useSystemAudio ? "on" : "off")
@@ -257,7 +262,10 @@ final class RecordingController: ObservableObject {
         """)
 
         do {
-            let writer = try MovieWriter(url: url, width: width, height: height, fps: fps, hasAudio: hasAudio)
+            let writer = try MovieWriter(url: url,
+                                       width: VideoCompositor.canvasWidth,
+                                       height: VideoCompositor.canvasHeight,
+                                       fps: fps, hasAudio: hasAudio)
             writer.prepare()
             self.writer = writer
 
@@ -444,6 +452,20 @@ final class RecordingController: ObservableObject {
     }
 
     // MARK: - Helpers
+
+    /// Reveal the most recent recording in Finder (or the output folder if the
+    /// file is gone / not yet recorded).
+    func revealLastRecording() {
+        if let url = lastOutputURL, FileManager.default.fileExists(atPath: url.path) {
+            Self.revealInFinder(url)
+        } else {
+            NSWorkspace.shared.activateFileViewerSelecting([outputFolder])
+            if let finder = NSRunningApplication.runningApplications(
+                withBundleIdentifier: "com.apple.finder").first {
+                finder.activate(options: [.activateAllWindows])
+            }
+        }
+    }
 
     /// Reveal a file in Finder and bring Finder to the front. `activateFileViewerSelecting`
     /// alone can leave the Finder window behind since PennyWise is a

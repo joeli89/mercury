@@ -19,7 +19,7 @@ Persistent context for working on Mercury: decisions, gotchas, and environment f
 - **Default 1x resolution**: captures at logical display size (not Retina pixel size) by default — 4x fewer pixels. User can toggle to Retina if they need pixel-perfect output.
 
 ## Gotchas
-- **Code signing & TCC**: builds are signed with the Apple Development identity (Team `43HHN9A4KG`), set manually in `project.yml` (`CODE_SIGN_STYLE: Manual`, `CODE_SIGN_IDENTITY: "Apple Development"`). This is deliberate — ad-hoc signing changes the binary cdhash every rebuild, which invalidates the Screen Recording / Camera / Mic TCC grants (Settings shows the toggle "on" but `CGPreflightScreenCaptureAccess()` returns false). A stable signing identity makes the grants persist across rebuilds.
+- **Code signing & TCC**: builds are signed with the Apple Development identity (Team `Z9F537W27X`), set manually in `project.yml` (`CODE_SIGN_STYLE: Manual`, `CODE_SIGN_IDENTITY: "Apple Development"`). This is deliberate — ad-hoc signing changes the binary cdhash every rebuild, which invalidates the Screen Recording / Camera / Mic TCC grants (Settings shows the toggle "on" but `CGPreflightScreenCaptureAccess()` returns false). A stable signing identity makes the grants persist across rebuilds.
 - macOS only reads Screen Recording permission at **launch** — after granting, quit & relaunch the app.
 - If permissions ever get stuck, reset with `tccutil reset ScreenCapture com.mercury.Mercury` then relaunch.
 - Window selection uses the native `SCContentSharingPicker` (see `WindowPicker.swift`) — the picker's selection itself grants access to that window's content.

@@ -63,7 +63,7 @@ placed on the screen where your mouse currently is.
 across rebuilds:
 
 ```yaml
-DEVELOPMENT_TEAM: "43HHN9A4KG"   # <-- change this to YOUR team ID
+DEVELOPMENT_TEAM: "Z9F537W27X"   # <-- change this to YOUR team ID
 CODE_SIGN_STYLE: Manual
 CODE_SIGN_IDENTITY: "Apple Development"
 ```

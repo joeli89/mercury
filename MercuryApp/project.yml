@@ -13,7 +13,7 @@ settings:
     PRODUCT_NAME: Mercury
     # Stable code signing so macOS TCC grants (Screen Recording, Camera, Mic)
     # persist across rebuilds instead of resetting like ad-hoc signing does.
-    DEVELOPMENT_TEAM: "43HHN9A4KG"
+    DEVELOPMENT_TEAM: "Z9F537W27X"
     CODE_SIGN_STYLE: Manual
     CODE_SIGN_IDENTITY: "Apple Development"
     ENABLE_HARDENED_RUNTIME: YES

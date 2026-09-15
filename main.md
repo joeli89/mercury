@@ -1,4 +1,4 @@
-# PennyWise
+# Mercury
 
 A simple, fully-local macOS screen recorder — record your screen with a webcam overlay plus microphone and system audio, and get a clean MP4 out. Nothing touches the cloud.
 
@@ -11,14 +11,14 @@ v1 in development: reliable "plain" recording (screen + webcam bubble + mic + sy
 ## Repository layout
 
 ```
-PennyWise/
+Mercury/
 ├── main.md          # This file — project overview
 ├── changelog.md     # Human-readable history of notable changes
 ├── memory.md        # Working notes, decisions, gotchas, environment facts
-└── PennyWiseApp/    # The actual macOS app (Swift + SwiftUI + Xcode project)
+└── MercuryApp/    # The actual macOS app (Swift + SwiftUI + Xcode project)
 ```
 
-## The app (PennyWiseApp)
+## The app (MercuryApp)
 
 - **Language / UI:** Swift 6 + SwiftUI
 - **Deployment target:** macOS 15+ (developed on macOS 26)
@@ -31,9 +31,9 @@ PennyWise/
 ### Build & run
 
 ```bash
-cd PennyWiseApp
-xcodegen generate      # produces PennyWise.xcodeproj
-open PennyWise.xcodeproj
+cd MercuryApp
+xcodegen generate      # produces Mercury.xcodeproj
+open Mercury.xcodeproj
 # Build & Run in Xcode (⌘R)
 ```
 

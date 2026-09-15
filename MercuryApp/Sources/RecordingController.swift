@@ -248,7 +248,7 @@ final class RecordingController: ObservableObject {
         }
         AppLog.log("""
 
-        ════════ PennyWise recording ════════
+        ════════ Mercury recording ════════
         \(AppLog.timestamp())
         File:          \(url.lastPathComponent)
         Source:        \(sourceDesc)
@@ -468,7 +468,7 @@ final class RecordingController: ObservableObject {
     }
 
     /// Reveal a file in Finder and bring Finder to the front. `activateFileViewerSelecting`
-    /// alone can leave the Finder window behind since PennyWise is a
+    /// alone can leave the Finder window behind since Mercury is a
     /// non-activating panel app, so we explicitly activate Finder too.
     static func revealInFinder(_ url: URL) {
         NSWorkspace.shared.activateFileViewerSelecting([url])
@@ -481,7 +481,7 @@ final class RecordingController: ObservableObject {
     static func newFilename() -> String {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd-HHmmss"
-        return "PennyWise-\(f.string(from: Date())).mp4"
+        return "Mercury-\(f.string(from: Date())).mp4"
     }
 
     func chooseOutputFolder() {

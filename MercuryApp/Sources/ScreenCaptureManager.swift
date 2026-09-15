@@ -5,8 +5,8 @@ import AVFoundation
 /// microphone, forwarding each to the supplied callbacks.
 final class ScreenCaptureManager: NSObject, SCStreamOutput, SCStreamDelegate {
     private var stream: SCStream?
-    private let videoQueue = DispatchQueue(label: "com.pennywise.capture.video")
-    private let audioQueue = DispatchQueue(label: "com.pennywise.capture.audio")
+    private let videoQueue = DispatchQueue(label: "com.mercury.capture.video")
+    private let audioQueue = DispatchQueue(label: "com.mercury.capture.audio")
 
     var onVideo: ((CMSampleBuffer) -> Void)?
     var onSystemAudio: ((CMSampleBuffer) -> Void)?

@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct PennyWiseApp: App {
+struct MercuryApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {

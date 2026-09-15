@@ -5,7 +5,7 @@ in mind for every change. See `README.md` for the human-oriented overview.
 
 ## What this is
 
-PennyWise is a fully-local macOS screen recorder (SwiftUI + AppKit). It captures
+Mercury is a fully-local macOS screen recorder (SwiftUI + AppKit). It captures
 screen/window + webcam + mic + system audio, composites onto a fixed 1920×1080
 canvas, and writes a compressed HEVC `.mp4`. No network/cloud component.
 
@@ -16,35 +16,35 @@ canvas, and writes a compressed HEVC `.mp4`. No network/cloud component.
 
 ## Project structure
 
-- App target lives in `PennyWiseApp/`
-- Swift sources in `PennyWiseApp/Sources/` (all `.swift` files are flat here)
-- Bundled background images in `PennyWiseApp/Sources/Tapestries/`
-- `PennyWiseApp/project.yml` is the source of truth for the Xcode project
+- App target lives in `MercuryApp/`
+- Swift sources in `MercuryApp/Sources/` (all `.swift` files are flat here)
+- Bundled background images in `MercuryApp/Sources/Tapestries/`
+- `MercuryApp/project.yml` is the source of truth for the Xcode project
 
 ## Build & verify
 
-Run all commands from `PennyWiseApp/`.
+Run all commands from `MercuryApp/`.
 
 ```bash
 # Regenerate the Xcode project (required after editing project.yml or adding files)
 xcodegen generate
 
 # Build (this is the primary verification step — treat build success as the gate)
-xcodebuild -project PennyWise.xcodeproj -scheme PennyWise -configuration Debug build
+xcodebuild -project Mercury.xcodeproj -scheme Mercury -configuration Debug build
 
 # Built app path:
-# ~/Library/Developer/Xcode/DerivedData/PennyWise-*/Build/Products/Debug/PennyWise.app
+# ~/Library/Developer/Xcode/DerivedData/Mercury-*/Build/Products/Debug/Mercury.app
 
 # Launch the built app:
-open ~/Library/Developer/Xcode/DerivedData/PennyWise-*/Build/Products/Debug/PennyWise.app
+open ~/Library/Developer/Xcode/DerivedData/Mercury-*/Build/Products/Debug/Mercury.app
 
 # Kill a running instance before relaunching:
-pkill -x PennyWise
+pkill -x Mercury
 ```
 
 There is **no automated test suite**. Verify changes by (1) a clean build and
 (2) launching and exercising the affected flow. Runtime logs go to
-`~/Library/Logs/PennyWise/PennyWise.log` (via `AppLog.swift`) — grep it to
+`~/Library/Logs/Mercury/Mercury.log` (via `AppLog.swift`) — grep it to
 confirm capture/compositing/compression behavior.
 
 ## Prerequisites (already installed on the dev machine)
@@ -55,7 +55,7 @@ confirm capture/compositing/compression behavior.
 
 ## Rules & conventions
 
-- **Never hand-edit `PennyWise.xcodeproj`.** It is generated. Edit `project.yml`
+- **Never hand-edit `Mercury.xcodeproj`.** It is generated. Edit `project.yml`
   and run `xcodegen generate`.
 - **After adding/removing/renaming a source file, run `xcodegen generate`** so
   it's picked up by the target.
@@ -73,7 +73,7 @@ confirm capture/compositing/compression behavior.
 
 - macOS reads the Screen Recording grant **at launch only**. After granting,
   quit and relaunch. Reset stuck grants with
-  `tccutil reset ScreenCapture com.pennywise.PennyWise` (also `Camera`, `Microphone`).
+  `tccutil reset ScreenCapture com.mercury.Mercury` (also `Camera`, `Microphone`).
 - The output canvas is always 1920×1080 (`VideoCompositor.canvasWidth/Height`);
   source frames are scaled to fit and centered. `MovieWriter` is initialized
   with these fixed dimensions, not the capture size.
@@ -89,10 +89,10 @@ confirm capture/compositing/compression behavior.
 
 ## Key files
 
-- `PennyWiseApp/Sources/RecordingController.swift` — orchestrates the pipeline
-- `PennyWiseApp/Sources/ScreenCaptureManager.swift` — SCStream capture
-- `PennyWiseApp/Sources/VideoCompositor.swift` — CoreImage compositing / canvas
-- `PennyWiseApp/Sources/MovieWriter.swift` — AVAssetWriter (HEVC/AAC)
-- `PennyWiseApp/Sources/FFmpegCompressor.swift` — libx265 post-compression
-- `PennyWiseApp/Sources/PennyWiseApp.swift` — app entry + floating panel setup
-- `PennyWiseApp/project.yml` — XcodeGen project definition
+- `MercuryApp/Sources/RecordingController.swift` — orchestrates the pipeline
+- `MercuryApp/Sources/ScreenCaptureManager.swift` — SCStream capture
+- `MercuryApp/Sources/VideoCompositor.swift` — CoreImage compositing / canvas
+- `MercuryApp/Sources/MovieWriter.swift` — AVAssetWriter (HEVC/AAC)
+- `MercuryApp/Sources/FFmpegCompressor.swift` — libx265 post-compression
+- `MercuryApp/Sources/MercuryApp.swift` — app entry + floating panel setup
+- `MercuryApp/project.yml` — XcodeGen project definition

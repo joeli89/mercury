@@ -1,6 +1,6 @@
 # Memory / Working Notes
 
-Persistent context for working on PennyWise: decisions, gotchas, and environment facts. Append as you learn.
+Persistent context for working on Mercury: decisions, gotchas, and environment facts. Append as you learn.
 
 ## Environment (verified 2026-08-28)
 - macOS 26.6.1 (build 25G76)
@@ -21,7 +21,7 @@ Persistent context for working on PennyWise: decisions, gotchas, and environment
 ## Gotchas
 - **Code signing & TCC**: builds are signed with the Apple Development identity (Team `43HHN9A4KG`), set manually in `project.yml` (`CODE_SIGN_STYLE: Manual`, `CODE_SIGN_IDENTITY: "Apple Development"`). This is deliberate — ad-hoc signing changes the binary cdhash every rebuild, which invalidates the Screen Recording / Camera / Mic TCC grants (Settings shows the toggle "on" but `CGPreflightScreenCaptureAccess()` returns false). A stable signing identity makes the grants persist across rebuilds.
 - macOS only reads Screen Recording permission at **launch** — after granting, quit & relaunch the app.
-- If permissions ever get stuck, reset with `tccutil reset ScreenCapture com.pennywise.PennyWise` then relaunch.
+- If permissions ever get stuck, reset with `tccutil reset ScreenCapture com.mercury.Mercury` then relaunch.
 - Window selection uses the native `SCContentSharingPicker` (see `WindowPicker.swift`) — the picker's selection itself grants access to that window's content.
 - Anchor all AVAssetWriter inputs (screen video + audio) to one session start time (host clock) to keep A/V in sync across the three async sources.
 - Reuse a `CVPixelBufferPool` for compositing; cap capture fps (30/60) to keep per-frame CoreImage work affordable at high resolution.

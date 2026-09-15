@@ -1,10 +1,11 @@
 # Changelog
 
-All notable changes to PennyWise are documented here. Newest first.
+All notable changes to Mercury are documented here. Newest first.
 
 ## [Unreleased]
 
 ### Changed
+- **Renamed PennyWise → Mercury** — app name, target/scheme, `MercuryApp/` folder, entitlements, bundle ID (`com.mercury.Mercury`), log path (`~/Library/Logs/Mercury/`). New bundle ID means Screen Recording / Camera / Mic must be re-granted once.
 - **Native window selection** — window capture now uses the system content picker (`SCContentSharingPicker`), so you click the window you want to record with hover highlighting, just like Loom / Screen Studio / macOS sharing. Replaces the buried dropdown.
 - Record button now surfaces errors (a small status card appears next to the pill) and, on missing Screen Recording permission, opens the relevant System Settings pane instead of silently doing nothing.
 - Pressing record in Window mode with no window chosen now auto-presents the picker.
@@ -20,8 +21,8 @@ All notable changes to PennyWise are documented here. Newest first.
 - `ToolbarView` — SwiftUI vertical toolbar hosted inside the floating panel.
 - Window capture mode — choose between recording a full display or a single window via a "Capture" segmented picker.
 - Resolution picker in the Output section (1x / Retina).
-- Project scaffolding: `PennyWise/` root with `main.md`, `changelog.md`, `memory.md`.
-- `PennyWiseApp/` macOS app scaffold (XcodeGen `project.yml`, entitlements, Info.plist).
+- Project scaffolding: `Mercury/` root with `main.md`, `changelog.md`, `memory.md`.
+- `MercuryApp/` macOS app scaffold (XcodeGen `project.yml`, entitlements, Info.plist).
 - v1 recording pipeline (builds & launches):
   - `ScreenCaptureManager` — single `SCStream` for screen video + system audio + microphone.
   - `CameraCaptureManager` — webcam frames via `AVCaptureSession`.

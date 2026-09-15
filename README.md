@@ -1,4 +1,4 @@
-# PennyWise
+# Mercury
 
 A simple, fully-local macOS screen recorder. Capture your screen (or a single
 window) with an optional webcam bubble, microphone narration, and system audio,
@@ -36,22 +36,22 @@ still works but the final compression step is skipped.
 
 ```bash
 git clone <this-repo>
-cd PennyWise/PennyWiseApp
+cd Mercury/MercuryApp
 
 # 1. Point signing at YOUR team (see "Code signing" below), then:
-xcodegen generate        # produces PennyWise.xcodeproj from project.yml
-open PennyWise.xcodeproj
+xcodegen generate        # produces Mercury.xcodeproj from project.yml
+open Mercury.xcodeproj
 
-# 2. In Xcode: select the "PennyWise" scheme and Build & Run (⌘R)
+# 2. In Xcode: select the "Mercury" scheme and Build & Run (⌘R)
 ```
 
 Or build entirely from the command line:
 
 ```bash
-cd PennyWiseApp
+cd MercuryApp
 xcodegen generate
-xcodebuild -project PennyWise.xcodeproj -scheme PennyWise -configuration Debug build
-# The .app is under ~/Library/Developer/Xcode/DerivedData/PennyWise-*/Build/Products/Debug/
+xcodebuild -project Mercury.xcodeproj -scheme Mercury -configuration Debug build
+# The .app is under ~/Library/Developer/Xcode/DerivedData/Mercury-*/Build/Products/Debug/
 ```
 
 The app has **no main window** — it launches as a floating vertical toolbar
@@ -92,9 +92,9 @@ quit and relaunch the app.
 If permissions get stuck, reset them and relaunch:
 
 ```bash
-tccutil reset ScreenCapture com.pennywise.PennyWise
-tccutil reset Camera        com.pennywise.PennyWise
-tccutil reset Microphone    com.pennywise.PennyWise
+tccutil reset ScreenCapture com.mercury.Mercury
+tccutil reset Camera        com.mercury.Mercury
+tccutil reset Microphone    com.mercury.Mercury
 ```
 
 ---
@@ -115,10 +115,10 @@ tccutil reset Microphone    com.pennywise.PennyWise
 All output is fixed at **1920×1080** regardless of source dimensions; content is
 scaled to fit and centered on the canvas.
 
-### Source layout (`PennyWiseApp/Sources/`)
+### Source layout (`MercuryApp/Sources/`)
 
 ```
-PennyWiseApp.swift        App entry point + AppDelegate; creates the floating panel
+MercuryApp.swift        App entry point + AppDelegate; creates the floating panel
 FloatingPanel.swift       Borderless always-on-top NSPanel + auto-sizing hosting view
 ToolbarView.swift         The vertical toolbar UI (record, window, camera, mic, bg, settings)
 ContentView.swift         Settings popover UI
@@ -136,13 +136,13 @@ CountdownController.swift  3-2-1 countdown before capture
 StatusController.swift / TooltipController.swift  Floating status + tooltip panels
 WindowPicker.swift        SCContentSharingPicker wrapper
 Glass.swift               Liquid Glass / material background helper
-AppLog.swift              Lightweight file logger (~/Library/Logs/PennyWise/PennyWise.log)
+AppLog.swift              Lightweight file logger (~/Library/Logs/Mercury/Mercury.log)
 Tapestries/               Bundled background images
 ```
 
 ### Logs
 
-Runtime logs are written to `~/Library/Logs/PennyWise/PennyWise.log` — useful for
+Runtime logs are written to `~/Library/Logs/Mercury/Mercury.log` — useful for
 diagnosing capture, compositing, and compression issues.
 
 ---

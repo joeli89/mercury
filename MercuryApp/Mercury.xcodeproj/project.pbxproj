@@ -1,0 +1,457 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0453D25160F191E1BAE231BD /* AudioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC8B2C2F1177EA26796FCCD /* AudioMixer.swift */; };
+		0C01DE74B4B02F3FB91B1B1F /* WindowPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F592C9703C5E4110F599CED /* WindowPicker.swift */; };
+		22B08131ED51C6D5FCB24CB7 /* 26-Tahoe-Dark.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = D72F1A785FB73D9C01D01422 /* 26-Tahoe-Dark.jpeg */; };
+		28D31A4EB57C71BF2FACFD50 /* ScreenCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D1B2E64BA72C9C3FDBAB01 /* ScreenCaptureManager.swift */; };
+		2B16A032CB8AF7F46C4DDFD9 /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D93A05CA7E70C7A02F0BB66A /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg */; };
+		2BB586C804D0920254D93DB8 /* 26-Tahoe-Light.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E97B9B46B35981FF8BF9108C /* 26-Tahoe-Light.jpeg */; };
+		2BF71639851DF7F7FB73A769 /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191D3B308AF619C3CC8594F9 /* ToolbarView.swift */; };
+		3941EB946E18BC2050DDD2DA /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D345BE5819A8EE665E2B7309 /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg */; };
+		46E1D8D1921CFE2A1DB004E5 /* StatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8395DF1DAE19AC7FD0821B54 /* StatusController.swift */; };
+		507D2AED955EADA88C37CB7E /* TooltipController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68E23475B409D5D808E98A1 /* TooltipController.swift */; };
+		5737DFDB59BC8525D3787541 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6DAD3334594444D3C856B0D0 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg */; };
+		5792F2597BCF58E15E22DCEC /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = B610B8284A73EE223FFFC61E /* Background.swift */; };
+		5E577D5E1AD2E9BE61BD4FFB /* CountdownController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03612C7B445984A587B7827 /* CountdownController.swift */; };
+		6A1AB85FC8C7D378092D2D5C /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E07B10E8C93C9D2049FEAB82 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg */; };
+		6CF1A44C17640E4F633ACFC0 /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 930A1C83C7D565DD229A8F5D /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg */; };
+		9040BF17828074B4D0489A29 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08157757FCA610332433F75C /* Permissions.swift */; };
+		951E3E4D3E03DF40969AFA24 /* MovieWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6DB6AB2438C813D407BE69 /* MovieWriter.swift */; };
+		9BE1C9708E7F89FF307F2B6F /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8B403BC4E7AD36CE1359B397 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */; };
+		9DBAAF147A4733C451E53745 /* Glass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4E11A56F15DB9C58FF1635 /* Glass.swift */; };
+		A36093E634127EA1949D9C73 /* VideoCompositor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F5680D6E5CC798B2E27E5 /* VideoCompositor.swift */; };
+		A4968D562C46ADC9CBAC803D /* CameraPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE279FB53BFC977266A6E8FD /* CameraPreviewController.swift */; };
+		A78DC5D7B91D2A541F74155B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FEEC8A58000980A2CE909F /* ContentView.swift */; };
+		AA3E6DC58A5F609800980B86 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2AE80497F989843064FB614 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg */; };
+		B2B9B1ED4DAA0893EF708D09 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27954BE4898DA93465D8577 /* FloatingPanel.swift */; };
+		B96889C9707D605CD1B83B77 /* FFmpegCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC88D873D81DA94AFC523F /* FFmpegCompressor.swift */; };
+		BDE8350A447165C8BF508A43 /* RecordingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A951BDAF2EAD5BCB9F060AD6 /* RecordingController.swift */; };
+		C21F8327243952C33082D31E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47E3A744EDD99F57DE801FF2 /* Assets.xcassets */; };
+		CEAEB72892E79CA8C67A4F6D /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8F524F7FD54FE9594108D4B6 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg */; };
+		DED67AC689D4EF96ED6ED4FF /* AppLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7366415561735EFEE3E16812 /* AppLog.swift */; };
+		EA231E23C746A40180AEC698 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E4CDFCC60A6FDF42EA726935 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg */; };
+		EB76B2C1553388D0FA5858A7 /* MercuryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E6BC4124CBF6CCF2ADE33 /* MercuryApp.swift */; };
+		ED02D730F596E6155F9AA8AB /* Wise_Tapestry_Platform_Full_Lg_v2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48C714E432B61140FD1EA0B8 /* Wise_Tapestry_Platform_Full_Lg_v2.jpg */; };
+		F2F641B61B67F0C798AF812B /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 27AA1997D2F0B287DFA0C2F3 /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg */; };
+		F350951F7AFDFDBF9860A782 /* CameraCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C3BE4A7D2EC556F65DCDF0 /* CameraCaptureManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		08157757FCA610332433F75C /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
+		191D3B308AF619C3CC8594F9 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
+		1D4E11A56F15DB9C58FF1635 /* Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glass.swift; sourceTree = "<group>"; };
+		1F592C9703C5E4110F599CED /* WindowPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowPicker.swift; sourceTree = "<group>"; };
+		27AA1997D2F0B287DFA0C2F3 /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg; sourceTree = "<group>"; };
+		2C2F5680D6E5CC798B2E27E5 /* VideoCompositor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompositor.swift; sourceTree = "<group>"; };
+		3B6DB6AB2438C813D407BE69 /* MovieWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieWriter.swift; sourceTree = "<group>"; };
+		47E3A744EDD99F57DE801FF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		48C714E432B61140FD1EA0B8 /* Wise_Tapestry_Platform_Full_Lg_v2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_Platform_Full_Lg_v2.jpg; sourceTree = "<group>"; };
+		590FA74BCF5DB7884E8C404F /* Mercury.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mercury.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DAD3334594444D3C856B0D0 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg"; sourceTree = "<group>"; };
+		7366415561735EFEE3E16812 /* AppLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLog.swift; sourceTree = "<group>"; };
+		74D1B2E64BA72C9C3FDBAB01 /* ScreenCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureManager.swift; sourceTree = "<group>"; };
+		7E3E6BC4124CBF6CCF2ADE33 /* MercuryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MercuryApp.swift; sourceTree = "<group>"; };
+		8395DF1DAE19AC7FD0821B54 /* StatusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusController.swift; sourceTree = "<group>"; };
+		8B403BC4E7AD36CE1359B397 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg; sourceTree = "<group>"; };
+		8F524F7FD54FE9594108D4B6 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg; sourceTree = "<group>"; };
+		930A1C83C7D565DD229A8F5D /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg; sourceTree = "<group>"; };
+		A8C3BE4A7D2EC556F65DCDF0 /* CameraCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureManager.swift; sourceTree = "<group>"; };
+		A951BDAF2EAD5BCB9F060AD6 /* RecordingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingController.swift; sourceTree = "<group>"; };
+		B03612C7B445984A587B7827 /* CountdownController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownController.swift; sourceTree = "<group>"; };
+		B610B8284A73EE223FFFC61E /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
+		C27954BE4898DA93465D8577 /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
+		C2FEEC8A58000980A2CE909F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D1EC88D873D81DA94AFC523F /* FFmpegCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFmpegCompressor.swift; sourceTree = "<group>"; };
+		D2AE80497F989843064FB614 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg; sourceTree = "<group>"; };
+		D345BE5819A8EE665E2B7309 /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg; sourceTree = "<group>"; };
+		D72F1A785FB73D9C01D01422 /* 26-Tahoe-Dark.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "26-Tahoe-Dark.jpeg"; sourceTree = "<group>"; };
+		D93A05CA7E70C7A02F0BB66A /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg; sourceTree = "<group>"; };
+		E07B10E8C93C9D2049FEAB82 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg; sourceTree = "<group>"; };
+		E4CDFCC60A6FDF42EA726935 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg; sourceTree = "<group>"; };
+		E97B9B46B35981FF8BF9108C /* 26-Tahoe-Light.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "26-Tahoe-Light.jpeg"; sourceTree = "<group>"; };
+		F68E23475B409D5D808E98A1 /* TooltipController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipController.swift; sourceTree = "<group>"; };
+		FE279FB53BFC977266A6E8FD /* CameraPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewController.swift; sourceTree = "<group>"; };
+		FFC8B2C2F1177EA26796FCCD /* AudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixer.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		02D9B97A924CCAA0D001BCD4 = {
+			isa = PBXGroup;
+			children = (
+				47E3A744EDD99F57DE801FF2 /* Assets.xcassets */,
+				EDB766D46CB82771998AA3DD /* Sources */,
+				C3720C5B3CF5336173F4D614 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BF24323B2C52892256A39F75 /* Tapestries */ = {
+			isa = PBXGroup;
+			children = (
+				D72F1A785FB73D9C01D01422 /* 26-Tahoe-Dark.jpeg */,
+				E97B9B46B35981FF8BF9108C /* 26-Tahoe-Light.jpeg */,
+				8F524F7FD54FE9594108D4B6 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg */,
+				D345BE5819A8EE665E2B7309 /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg */,
+				D2AE80497F989843064FB614 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg */,
+				930A1C83C7D565DD229A8F5D /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg */,
+				E4CDFCC60A6FDF42EA726935 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg */,
+				27AA1997D2F0B287DFA0C2F3 /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg */,
+				E07B10E8C93C9D2049FEAB82 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg */,
+				D93A05CA7E70C7A02F0BB66A /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg */,
+				6DAD3334594444D3C856B0D0 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg */,
+				8B403BC4E7AD36CE1359B397 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */,
+				48C714E432B61140FD1EA0B8 /* Wise_Tapestry_Platform_Full_Lg_v2.jpg */,
+			);
+			path = Tapestries;
+			sourceTree = "<group>";
+		};
+		C3720C5B3CF5336173F4D614 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				590FA74BCF5DB7884E8C404F /* Mercury.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EDB766D46CB82771998AA3DD /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				7366415561735EFEE3E16812 /* AppLog.swift */,
+				FFC8B2C2F1177EA26796FCCD /* AudioMixer.swift */,
+				B610B8284A73EE223FFFC61E /* Background.swift */,
+				A8C3BE4A7D2EC556F65DCDF0 /* CameraCaptureManager.swift */,
+				FE279FB53BFC977266A6E8FD /* CameraPreviewController.swift */,
+				C2FEEC8A58000980A2CE909F /* ContentView.swift */,
+				B03612C7B445984A587B7827 /* CountdownController.swift */,
+				D1EC88D873D81DA94AFC523F /* FFmpegCompressor.swift */,
+				C27954BE4898DA93465D8577 /* FloatingPanel.swift */,
+				1D4E11A56F15DB9C58FF1635 /* Glass.swift */,
+				7E3E6BC4124CBF6CCF2ADE33 /* MercuryApp.swift */,
+				3B6DB6AB2438C813D407BE69 /* MovieWriter.swift */,
+				08157757FCA610332433F75C /* Permissions.swift */,
+				A951BDAF2EAD5BCB9F060AD6 /* RecordingController.swift */,
+				74D1B2E64BA72C9C3FDBAB01 /* ScreenCaptureManager.swift */,
+				8395DF1DAE19AC7FD0821B54 /* StatusController.swift */,
+				191D3B308AF619C3CC8594F9 /* ToolbarView.swift */,
+				F68E23475B409D5D808E98A1 /* TooltipController.swift */,
+				2C2F5680D6E5CC798B2E27E5 /* VideoCompositor.swift */,
+				1F592C9703C5E4110F599CED /* WindowPicker.swift */,
+				BF24323B2C52892256A39F75 /* Tapestries */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		55A5F29E8FABDD5E83B6B3AD /* Mercury */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A08FC03B4A5260759541AF7B /* Build configuration list for PBXNativeTarget "Mercury" */;
+			buildPhases = (
+				00FB6501EAF9E16342F3E5A0 /* Sources */,
+				CBA9186514A23A02FEB963E8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mercury;
+			packageProductDependencies = (
+			);
+			productName = Mercury;
+			productReference = 590FA74BCF5DB7884E8C404F /* Mercury.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F2FD6F177294F0C6ED22C31C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					55A5F29E8FABDD5E83B6B3AD = {
+						DevelopmentTeam = 43HHN9A4KG;
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 722BC670234ED650AAA60C22 /* Build configuration list for PBXProject "Mercury" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 02D9B97A924CCAA0D001BCD4;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = C3720C5B3CF5336173F4D614 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				55A5F29E8FABDD5E83B6B3AD /* Mercury */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CBA9186514A23A02FEB963E8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22B08131ED51C6D5FCB24CB7 /* 26-Tahoe-Dark.jpeg in Resources */,
+				2BB586C804D0920254D93DB8 /* 26-Tahoe-Light.jpeg in Resources */,
+				C21F8327243952C33082D31E /* Assets.xcassets in Resources */,
+				CEAEB72892E79CA8C67A4F6D /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg in Resources */,
+				3941EB946E18BC2050DDD2DA /* Wise_Tapestry_02_Australasia_SAsia_Aqua_Purple_Lg.jpg in Resources */,
+				AA3E6DC58A5F609800980B86 /* Wise_Tapestry_03_NAmerica_EAsia_Pink_Orange_Lg.jpg in Resources */,
+				6CF1A44C17640E4F633ACFC0 /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg in Resources */,
+				EA231E23C746A40180AEC698 /* Wise_Tapestry_05_NEurope_WAfrica_Dark_Green_Lg.jpg in Resources */,
+				F2F641B61B67F0C798AF812B /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg in Resources */,
+				6A1AB85FC8C7D378092D2D5C /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg in Resources */,
+				2B16A032CB8AF7F46C4DDFD9 /* Wise_Tapestry_08_NAfrica_Europe_Green_Yellow_Orange_Lg.jpg in Resources */,
+				5737DFDB59BC8525D3787541 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg in Resources */,
+				9BE1C9708E7F89FF307F2B6F /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg in Resources */,
+				ED02D730F596E6155F9AA8AB /* Wise_Tapestry_Platform_Full_Lg_v2.jpg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		00FB6501EAF9E16342F3E5A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DED67AC689D4EF96ED6ED4FF /* AppLog.swift in Sources */,
+				0453D25160F191E1BAE231BD /* AudioMixer.swift in Sources */,
+				5792F2597BCF58E15E22DCEC /* Background.swift in Sources */,
+				F350951F7AFDFDBF9860A782 /* CameraCaptureManager.swift in Sources */,
+				A4968D562C46ADC9CBAC803D /* CameraPreviewController.swift in Sources */,
+				A78DC5D7B91D2A541F74155B /* ContentView.swift in Sources */,
+				5E577D5E1AD2E9BE61BD4FFB /* CountdownController.swift in Sources */,
+				B96889C9707D605CD1B83B77 /* FFmpegCompressor.swift in Sources */,
+				B2B9B1ED4DAA0893EF708D09 /* FloatingPanel.swift in Sources */,
+				9DBAAF147A4733C451E53745 /* Glass.swift in Sources */,
+				EB76B2C1553388D0FA5858A7 /* MercuryApp.swift in Sources */,
+				951E3E4D3E03DF40969AFA24 /* MovieWriter.swift in Sources */,
+				9040BF17828074B4D0489A29 /* Permissions.swift in Sources */,
+				BDE8350A447165C8BF508A43 /* RecordingController.swift in Sources */,
+				28D31A4EB57C71BF2FACFD50 /* ScreenCaptureManager.swift in Sources */,
+				46E1D8D1921CFE2A1DB004E5 /* StatusController.swift in Sources */,
+				2BF71639851DF7F7FB73A769 /* ToolbarView.swift in Sources */,
+				507D2AED955EADA88C37CB7E /* TooltipController.swift in Sources */,
+				A36093E634127EA1949D9C73 /* VideoCompositor.swift in Sources */,
+				0C01DE74B4B02F3FB91B1B1F /* WindowPicker.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2D2317550FF4BFD365C668DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Mercury.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mercury.Mercury;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		4B321F731F4D40F98ED0AE97 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Mercury.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mercury.Mercury;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		6C3E228B3EE4099909D01CC5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 43HHN9A4KG;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = Mercury;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		94EA9C6A24841A361FB9E426 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 43HHN9A4KG;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = Mercury;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		722BC670234ED650AAA60C22 /* Build configuration list for PBXProject "Mercury" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6C3E228B3EE4099909D01CC5 /* Debug */,
+				94EA9C6A24841A361FB9E426 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A08FC03B4A5260759541AF7B /* Build configuration list for PBXNativeTarget "Mercury" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B321F731F4D40F98ED0AE97 /* Debug */,
+				2D2317550FF4BFD365C668DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F2FD6F177294F0C6ED22C31C /* Project object */;
+}

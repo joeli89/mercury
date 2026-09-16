@@ -17,22 +17,26 @@ import AppKit
 final class VideoCompositor {
     // MARK: - Output canvas
     //
-    // The canvas takes the shape of the source: 1920 wide for landscape
-    // sources, 1080 wide for portrait ones, with the height following the
-    // source's aspect ratio. With no background the content fills the canvas
-    // edge to edge ("full width"); with a background the canvas is enlarged by
-    // a fixed margin on every side so the background hugs the content ("hug").
+    // No background: the content IS the video — 1920 wide for landscape
+    // sources, 1080 wide for portrait ones, height from the source's aspect.
+    // Background + Full width: a fixed 1920×1080 presentation frame with the
+    // content centred inside a margin.
+    // Background + Hug: the frame wraps the content plus the margin.
     static let landscapeWidth = 1920
     static let portraitWidth  = 1080
-    static let hugMarginFraction: CGFloat = 0.05   // of canvas width
+    static let frameWidth  = 1920
+    static let frameHeight = 1080
+    static let marginFraction: CGFloat = 0.05   // of canvas width
     let canvasWidth: Int
     let canvasHeight: Int
 
     /// Canvas size for a source of the given pixel size.
-    static func canvasSize(forSourceWidth w: Int, height h: Int, hasBackground: Bool) -> (width: Int, height: Int) {
-        guard w > 0, h > 0 else { return (landscapeWidth, landscapeWidth * 9 / 16) }
+    static func canvasSize(forSourceWidth w: Int, height h: Int,
+                           hasBackground: Bool, fullWidth: Bool) -> (width: Int, height: Int) {
+        guard w > 0, h > 0 else { return (frameWidth, frameHeight) }
+        if hasBackground && fullWidth { return (frameWidth, frameHeight) }
         let cw = h > w ? portraitWidth : landscapeWidth
-        let margin = hasBackground ? CGFloat(cw) * hugMarginFraction : 0
+        let margin = hasBackground ? CGFloat(cw) * marginFraction : 0
         let contentW = CGFloat(cw) - 2 * margin
         let contentH = CGFloat(h) * contentW / CGFloat(w)
         var ch = Int((contentH + 2 * margin).rounded())
@@ -212,7 +216,7 @@ final class VideoCompositor {
 
         let fw = CGFloat(cw), fh = CGFloat(ch)
         let srcW = CGFloat(sw), srcH = CGFloat(sh)
-        let pad = Self.hugMarginFraction * fw
+        let pad = Self.marginFraction * fw
         let availW = fw - 2 * pad
         let availH = fh - 2 * pad
 

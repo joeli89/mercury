@@ -11,9 +11,10 @@ enum CaptureSource: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-/// How the recording sits in the frame.
-/// Full width: content edge to edge, no background. Hug: a background wraps
-/// the content with a small margin.
+/// How the recording sits in the frame when a background is on.
+/// Full width: a fixed 16:9 presentation frame with the content centred.
+/// Hug: the frame wraps the content with a small margin.
+/// (With no background both are the same: the content is the whole video.)
 enum FrameLayout: String, CaseIterable, Identifiable {
     case fullWidth = "Full width"
     case hug = "Hug"
@@ -72,25 +73,8 @@ final class RecordingController: ObservableObject {
     @Published var compressionProgress: Double = 0
 
     // Background compositing (Screen Studio-style)
-    @Published var layout: FrameLayout = .hug {
-        didSet {
-            // Hug needs a background; pick the first real one if none is set.
-            if layout == .hug, background.isNone,
-               let first = BackgroundOption.presets.first(where: { !$0.isNone }) {
-                background = first
-            }
-        }
-    }
-    @Published var background: BackgroundOption = BackgroundOption.presets[4] {
-        didSet {
-            // Choosing a background implies Hug.
-            if !background.isNone, layout == .fullWidth { layout = .hug }
-        }
-    }
-    /// Background actually rendered: none in Full width, the chosen one in Hug.
-    var effectiveBackground: BackgroundOption {
-        layout == .hug ? background : BackgroundOption.presets[0]
-    }
+    @Published var layout: FrameLayout = .hug
+    @Published var background: BackgroundOption = BackgroundOption.presets[4]
     @Published var outputFolder: URL = FileManager.default
         .urls(for: .moviesDirectory, in: .userDomainMask).first
         ?? FileManager.default.homeDirectoryForCurrentUser
@@ -364,7 +348,8 @@ final class RecordingController: ObservableObject {
         // Canvas follows the source's shape: full width with no background,
         // hugged by a fixed margin when a background is on.
         let canvas = VideoCompositor.canvasSize(forSourceWidth: width, height: height,
-                                                hasBackground: layout == .hug)
+                                                hasBackground: !background.isNone,
+                                                fullWidth: layout == .fullWidth)
 
         // Loom-style 3-2-1 countdown before capture begins (so it isn't
         // recorded). Bail out if the user isn't recording anymore.
@@ -402,11 +387,11 @@ final class RecordingController: ObservableObject {
         File:          \(url.lastPathComponent)
         Source:        \(sourceDesc)
         Capture:       \(captureDesc)
-        Output:        \(canvas.width)×\(canvas.height) (\(layout.rawValue.lowercased()))
-        Camera:        \(useCamera ? "on (size \(String(format: "%.2f", cameraWidthFraction)))" : "off")
+        Output:        \(canvas.width)×\(canvas.height) (\(background.isNone ? "content only" : layout.rawValue.lowercased()))
+        Camera:        \(useCamera ? "on — \(cameras.first { $0.uniqueID == selectedCameraID }?.localizedName ?? "default") (size \(String(format: "%.2f", cameraWidthFraction)))" : "off")
         Microphone:    \(useMic ? "on" : "off")
         \(captureSource == .phone ? "iPhone audio: " : "System audio: ") \(useSystemAudio ? "on" : "off")
-        Background:    \(effectiveBackground.name)
+        Background:    \(background.name)
         Compression:   \(compressOutput ? compressionQuality.rawValue : "off")
         """)
 
@@ -419,7 +404,7 @@ final class RecordingController: ObservableObject {
             self.writer = writer
 
             let compositor = VideoCompositor(showCamera: useCamera,
-                                             background: effectiveBackground,
+                                             background: background,
                                              canvasWidth: canvas.width,
                                              canvasHeight: canvas.height)
             compositor.cameraWidthFraction = cameraWidthFraction

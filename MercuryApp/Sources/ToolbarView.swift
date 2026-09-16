@@ -303,7 +303,7 @@ struct ToolbarView: View {
         Button {
             showBackgrounds.toggle()
         } label: {
-            controller.effectiveBackground.swatch
+            controller.background.swatch
                 .frame(width: 18, height: 18)
                 .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
                 .overlay(
@@ -325,35 +325,18 @@ struct ToolbarView: View {
 
     private var backgroundPopover: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Layout").font(.headline)
-            Picker("", selection: $controller.layout) {
-                ForEach(FrameLayout.allCases) { l in
-                    Text(l.rawValue).tag(l)
-                }
-            }
-            .labelsHidden()
-            .pickerStyle(.segmented)
-            .disabled(controller.isRecording)
-            Text(controller.layout == .fullWidth
-                 ? "The recording fills the frame edge to edge."
-                 : "A background wraps the recording with a small margin.")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-
             Text("Background").font(.headline)
-                .padding(.top, 4)
 
             let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 3)
             var options: [BackgroundOption] {
-                var list = BackgroundOption.presets.filter { !$0.isNone }
+                var list = BackgroundOption.presets
                 if controller.background.id == "custom" { list.append(controller.background) }
                 return list
             }
 
             LazyVGrid(columns: columns, spacing: 10) {
                 ForEach(options) { option in
-                    let selected = controller.layout == .hug && controller.background.id == option.id
+                    let selected = controller.background.id == option.id
                     Button {
                         controller.background = option
                     } label: {
@@ -379,6 +362,25 @@ struct ToolbarView: View {
                 Button("Custom image…") { controller.chooseBackgroundImage() }
                     .disabled(controller.isRecording)
             }
+
+            Text("Layout").font(.headline)
+                .padding(.top, 6)
+            Picker("", selection: $controller.layout) {
+                ForEach(FrameLayout.allCases) { l in
+                    Text(l.rawValue).tag(l)
+                }
+            }
+            .labelsHidden()
+            .pickerStyle(.segmented)
+            .disabled(controller.isRecording || controller.background.isNone)
+            Text(controller.background.isNone
+                 ? "No background: the recording is the whole video."
+                 : controller.layout == .fullWidth
+                    ? "A 16:9 presentation frame with the recording centred."
+                    : "The frame wraps the recording with a small margin.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .padding(16)
         .frame(width: 320)

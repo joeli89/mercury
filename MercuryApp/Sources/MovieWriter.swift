@@ -14,6 +14,10 @@ final class MovieWriter {
     private var sessionStarted = false
     private var startPTS: CMTime = .zero
     private(set) var finished = false
+    private var videoFrames = 0
+    private var droppedFrames = 0
+    private var audioBuffers = 0
+    private var loggedAppendFailure = false
 
     let outputURL: URL
 
@@ -74,7 +78,14 @@ final class MovieWriter {
                 self.sessionStarted = true
             }
             if self.videoInput.isReadyForMoreMediaData {
-                self.adaptor.append(pixelBuffer, withPresentationTime: pts)
+                if self.adaptor.append(pixelBuffer, withPresentationTime: pts) {
+                    self.videoFrames += 1
+                } else if !self.loggedAppendFailure {
+                    self.loggedAppendFailure = true
+                    AppLog.log("Writer:        video append FAILED (\(CVPixelBufferGetWidth(pixelBuffer))×\(CVPixelBufferGetHeight(pixelBuffer))) — \(Self.describe(self.writer.error))")
+                }
+            } else {
+                self.droppedFrames += 1
             }
         }
     }
@@ -86,7 +97,7 @@ final class MovieWriter {
             let pts = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
             guard pts >= self.startPTS else { return }
             if audioInput.isReadyForMoreMediaData {
-                audioInput.append(sampleBuffer)
+                if audioInput.append(sampleBuffer) { self.audioBuffers += 1 }
             }
         }
     }
@@ -105,6 +116,18 @@ final class MovieWriter {
         }
     }
 
+    /// Full error text including the underlying error, for the log.
+    private static func describe(_ error: Error?) -> String {
+        guard let error else { return "no error" }
+        let ns = error as NSError
+        var text = "\(ns.domain) \(ns.code): \(ns.localizedDescription)"
+        if let reason = ns.localizedFailureReason { text += " — \(reason)" }
+        if let underlying = ns.userInfo[NSUnderlyingErrorKey] as? NSError {
+            text += " [underlying \(underlying.domain) \(underlying.code): \(underlying.localizedDescription)]"
+        }
+        return text
+    }
+
     func finish() async -> Result<URL, Error> {
         await withCheckedContinuation { (continuation: CheckedContinuation<Result<URL, Error>, Never>) in
             queue.async {
@@ -112,11 +135,13 @@ final class MovieWriter {
                     continuation.resume(returning: .success(self.outputURL)); return
                 }
                 self.finished = true
+                AppLog.log("Writer:        \(self.videoFrames) video frames, \(self.droppedFrames) dropped, \(self.audioBuffers) audio buffers, status \(self.writer.status.rawValue)")
                 if self.writer.status == .writing {
                     self.videoInput.markAsFinished()
                     self.audioInput?.markAsFinished()
                     self.writer.finishWriting {
                         if let error = self.writer.error {
+                            AppLog.log("Writer error:  \(Self.describe(error))")
                             continuation.resume(returning: .failure(error))
                         } else {
                             continuation.resume(returning: .success(self.outputURL))
@@ -125,6 +150,7 @@ final class MovieWriter {
                 } else {
                     let err = self.writer.error ?? NSError(domain: "Mercury", code: -1,
                         userInfo: [NSLocalizedDescriptionKey: "Writer never started (status \(self.writer.status.rawValue))."])
+                    AppLog.log("Writer error:  \(Self.describe(err))")
                     continuation.resume(returning: .failure(err))
                 }
             }

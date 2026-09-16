@@ -13,19 +13,22 @@ struct ContentView: View {
             GroupBox("Sources") {
                 VStack(alignment: .leading, spacing: 12) {
                     captureSourcePicker
-                    if controller.captureSource == .display {
-                        displayPicker
-                    } else {
-                        windowPicker
+                    switch controller.captureSource {
+                    case .display: displayPicker
+                    case .window: windowPicker
+                    case .phone: phonePicker
                     }
                     Divider()
                     cameraRow
                     micRow
                     HStack(spacing: 4) {
-                        Toggle("Record system audio", isOn: $controller.enableSystemAudio)
+                        Toggle(controller.captureSource == .phone ? "Record iPhone audio" : "Record system audio",
+                               isOn: $controller.enableSystemAudio)
                             .disabled(controller.isRecording)
                             .fixedSize()
-                        helpHint("Capture the sound playing from your Mac — apps, videos, music, alerts.")
+                        helpHint(controller.captureSource == .phone
+                                 ? "Capture the sound playing on the iPhone."
+                                 : "Capture the sound playing from your Mac — apps, videos, music, alerts.")
                         Spacer()
                     }
                 }
@@ -41,6 +44,17 @@ struct ContentView: View {
                         Spacer()
                         Button("Choose…") { controller.chooseOutputFolder() }
                             .disabled(controller.isRecording)
+                    }
+                    HStack {
+                        labelWithHint("Orientation", "Canvas shape of the finished video. Auto uses portrait (1080×1920) for iPhone recordings and landscape (1920×1080) for everything else.")
+                        Picker("", selection: $controller.outputOrientation) {
+                            ForEach(OutputOrientation.allCases) { o in
+                                Text(o.rawValue).tag(o)
+                            }
+                        }
+                        .labelsHidden()
+                        .pickerStyle(.segmented)
+                        .disabled(controller.isRecording)
                     }
                     HStack {
                         labelWithHint("Frame rate", "Frames per second. 60 is smoother for motion; 30 produces smaller files.")
@@ -61,7 +75,7 @@ struct ContentView: View {
                         }
                         .labelsHidden()
                         .pickerStyle(.segmented)
-                        .disabled(controller.isRecording)
+                        .disabled(controller.isRecording || controller.captureSource == .phone)
                     }
 
                     Divider()
@@ -119,7 +133,7 @@ struct ContentView: View {
 
     private var captureSourcePicker: some View {
         HStack {
-            labelWithHint("Capture", "Record your entire display or just a single window.")
+            labelWithHint("Capture", "Record your entire display, a single window, or an iPhone connected by USB.")
             Picker("", selection: $controller.captureSource) {
                 ForEach(CaptureSource.allCases) { source in
                     Text(source.rawValue).tag(source)
@@ -153,6 +167,28 @@ struct ContentView: View {
                 Task { await controller.chooseWindow() }
             }
             .disabled(controller.isRecording)
+        }
+    }
+
+    private var phonePicker: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "iphone")
+                .foregroundStyle(.secondary)
+            if controller.phones.isEmpty {
+                Text("No iPhone found. Connect it with a cable, unlock it, and tap Trust.")
+                    .font(.callout).foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer()
+                Button("Refresh") { controller.refreshPhones() }
+            } else {
+                Picker("", selection: $controller.selectedPhoneID) {
+                    ForEach(controller.phones, id: \.uniqueID) { d in
+                        Text(d.localizedName).tag(Optional(d.uniqueID))
+                    }
+                }
+                .labelsHidden()
+                .disabled(controller.isRecording)
+            }
         }
     }
 

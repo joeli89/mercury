@@ -4,6 +4,11 @@ All notable changes to Mercury are documented here. Newest first.
 
 ## [Unreleased]
 
+### Added
+- **iPhone recording over USB** — new "iPhone" capture source (toolbar button + settings picker). Opts in via CoreMediaIO so a cabled, unlocked, trusted iPhone shows up as a capture device (same mechanism as QuickTime); records the phone's screen at native resolution with phone audio and/or the Mac mic, composited onto the usual 1920×1080 canvas with backgrounds and the webcam bubble. New `PhoneCaptureManager.swift`.
+- **Live iPhone view** — selecting the iPhone source opens a floating, resizable live view of the phone screen (`PhonePreviewController.swift`), usable for live demos and screen-sharing, not just recording.
+- **Portrait output** — new Orientation setting (Auto / Landscape / Portrait). Auto renders iPhone recordings onto a 1080×1920 canvas so the phone fills the frame instead of shrinking to a third of its size; phone content gets iPhone-style rounded corners.
+
 ### Changed
 - **Renamed PennyWise → Mercury** — app name, target/scheme, `MercuryApp/` folder, entitlements, bundle ID (`com.mercury.Mercury`), log path (`~/Library/Logs/Mercury/`). New bundle ID means Screen Recording / Camera / Mic must be re-granted once.
 - **Native window selection** — window capture now uses the system content picker (`SCContentSharingPicker`), so you click the window you want to record with hover highlighting, just like Loom / Screen Studio / macOS sharing. Replaces the buried dropdown.

@@ -62,6 +62,7 @@ struct ToolbarView: View {
         case "record":   return "Record"
         case "discard":  return "Discard"
         case "window":   return "Window"
+        case "phone":    return controller.captureSource == .phone ? "iPhone (selected)" : "iPhone"
         case "camera":   return controller.enableCamera ? "Camera on" : "Camera off"
         case "mic":      return controller.enableMicrophone ? "Mic on" : "Mic off"
         case "bg":       return "Background"
@@ -95,6 +96,9 @@ struct ToolbarView: View {
             iconButton("macwindow", id: "window") {
                 Task { await controller.chooseWindow() }
             }
+
+            // Record a USB-connected iPhone (toggles back to display)
+            phoneButton
 
             // Toggle webcam on/off
             cameraToggleButton
@@ -165,6 +169,24 @@ struct ToolbarView: View {
         .scaleEffect(hovered == "record" ? 1.08 : 1.0)
         .animation(.easeOut(duration: 0.15), value: hovered)
         .background(frameTracker(id: "record"))
+    }
+
+    private var phoneButton: some View {
+        let active = controller.captureSource == .phone
+        return Button {
+            controller.togglePhoneSource()
+        } label: {
+            Image(systemName: "iphone")
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(active ? Color.accentColor : Color.primary.opacity(hovered == "phone" ? 1.0 : 0.65))
+                .frame(width: 36, height: 36)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(controller.isRecording)
+        .onHover { inside in hovered = inside ? "phone" : nil }
+        .animation(.easeOut(duration: 0.15), value: hovered)
+        .background(frameTracker(id: "phone"))
     }
 
     private var cameraToggleButton: some View {

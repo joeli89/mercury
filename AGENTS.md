@@ -71,6 +71,12 @@ confirm capture/compositing/compression behavior.
 
 ## Gotchas
 
+- iPhone capture: `kCMIOHardwarePropertyAllowScreenCaptureDevices` must be set
+  once (never repeatedly — that stops devices appearing); phones take a few
+  seconds to show up and only after a first `DiscoverySession` enumeration.
+  The device must be unlocked and trusted. Capture is gated by the Camera
+  permission, not Screen Recording.
+
 - macOS reads the Screen Recording grant **at launch only**. After granting,
   quit and relaunch. Reset stuck grants with
   `tccutil reset ScreenCapture com.mercury.Mercury` (also `Camera`, `Microphone`).
@@ -91,6 +97,7 @@ confirm capture/compositing/compression behavior.
 
 - `MercuryApp/Sources/RecordingController.swift` — orchestrates the pipeline
 - `MercuryApp/Sources/ScreenCaptureManager.swift` — SCStream capture
+- `MercuryApp/Sources/PhoneCaptureManager.swift` — USB iPhone capture (CoreMediaIO opt-in + AVCaptureSession)
 - `MercuryApp/Sources/VideoCompositor.swift` — CoreImage compositing / canvas
 - `MercuryApp/Sources/MovieWriter.swift` — AVAssetWriter (HEVC/AAC)
 - `MercuryApp/Sources/FFmpegCompressor.swift` — libx265 post-compression

@@ -7,6 +7,15 @@ import UniformTypeIdentifiers
 enum CaptureSource: String, CaseIterable, Identifiable {
     case display = "Display"
     case window = "Window"
+    case phone = "iPhone"
+    var id: String { rawValue }
+}
+
+/// Output canvas orientation. Auto = portrait for iPhone, landscape otherwise.
+enum OutputOrientation: String, CaseIterable, Identifiable {
+    case auto = "Auto"
+    case landscape = "Landscape"
+    case portrait = "Portrait"
     var id: String { rawValue }
 }
 
@@ -31,8 +40,12 @@ final class RecordingController: ObservableObject {
     @Published var displays: [SCDisplay] = []
     @Published var cameras: [AVCaptureDevice] = []
     @Published var microphones: [AVCaptureDevice] = []
+    /// USB-connected iPhones/iPads (exposed via CoreMediaIO, see PhoneCaptureManager).
+    @Published var phones: [AVCaptureDevice] = []
+    @Published var selectedPhoneID: String? { didSet { if selectedPhoneID != oldValue { Task { await syncPhonePreview() } } } }
 
-    @Published var captureSource: CaptureSource = .display
+    @Published var captureSource: CaptureSource = .display { didSet { if captureSource != oldValue { Task { await syncPhonePreview() } } } }
+    @Published var outputOrientation: OutputOrientation = .auto
     @Published var selectedDisplayID: CGDirectDisplayID?
     @Published var selectedCameraID: String? { didSet { if selectedCameraID != oldValue { Task { await syncCameraPreview() } } } }
     @Published var selectedMicID: String?
@@ -75,8 +88,12 @@ final class RecordingController: ObservableObject {
     /// Persistent camera session — runs whenever the camera is enabled (for the
     /// live preview) and also feeds the compositor while recording.
     private let cameraManager = CameraCaptureManager()
+    /// USB iPhone screen capture (only runs while recording in iPhone mode).
+    private let phoneManager = PhoneCaptureManager()
     /// Floating self-view preview (set by AppDelegate).
     weak var cameraPreview: CameraPreviewController?
+    /// Floating live view of the iPhone screen (set by AppDelegate).
+    weak var phonePreview: PhonePreviewController?
     private var compositor: VideoCompositor?
     private var mixer: AudioMixer?
     private var writer: MovieWriter?
@@ -89,6 +106,35 @@ final class RecordingController: ObservableObject {
 
     /// True while the 3-2-1 countdown is showing (before capture begins).
     @Published var isCountingDown = false
+
+    init() {
+        phoneManager.onDevicesChanged = { [weak self] in
+            Task { @MainActor in self?.refreshPhones() }
+        }
+        phoneManager.onDisconnected = { [weak self] in
+            Task { @MainActor in
+                self?.handleUnexpectedStop(NSError(domain: "Mercury", code: -22,
+                    userInfo: [NSLocalizedDescriptionKey: "iPhone was disconnected."]))
+            }
+        }
+    }
+
+    var selectedPhone: AVCaptureDevice? {
+        phones.first { $0.uniqueID == selectedPhoneID }
+    }
+
+    /// The canvas the recording is rendered onto.
+    var canvasSize: (width: Int, height: Int) {
+        let portrait: Bool
+        switch outputOrientation {
+        case .auto:      portrait = captureSource == .phone
+        case .landscape: portrait = false
+        case .portrait:  portrait = true
+        }
+        return portrait
+            ? (VideoCompositor.defaultCanvasHeight, VideoCompositor.defaultCanvasWidth)
+            : (VideoCompositor.defaultCanvasWidth, VideoCompositor.defaultCanvasHeight)
+    }
 
     // MARK: - Device discovery
 
@@ -105,11 +151,66 @@ final class RecordingController: ObservableObject {
         if selectedCameraID == nil { selectedCameraID = cameras.first?.uniqueID }
         if selectedMicID == nil { selectedMicID = microphones.first?.uniqueID }
 
+        PhoneCaptureManager.enableScreenCaptureDevices()
+        refreshPhones()
+        // Phones take a few seconds to show up after the CoreMediaIO opt-in.
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(3))
+            self?.refreshPhones()
+        }
+
         do {
             displays = try await ScreenCaptureManager.availableDisplays()
             if selectedDisplayID == nil { selectedDisplayID = displays.first?.displayID }
         } catch {
             status = "Could not list displays. Grant Screen Recording permission."
+        }
+    }
+
+    /// Re-list connected phones and keep the selection valid.
+    func refreshPhones() {
+        phones = PhoneCaptureManager.availablePhones()
+        if selectedPhone == nil { selectedPhoneID = phones.first?.uniqueID }
+    }
+
+    /// Toolbar action: switch to iPhone capture (or back to the display).
+    func togglePhoneSource() {
+        if captureSource == .phone {
+            captureSource = .display
+            status = "Ready."
+            return
+        }
+        refreshPhones()
+        captureSource = .phone
+        if let phone = selectedPhone {
+            status = "Ready — \(phone.localizedName) selected."
+        } else {
+            status = "No iPhone found. Connect it with a cable, unlock it, and tap Trust."
+        }
+    }
+
+    // MARK: - iPhone preview
+
+    /// Runs the phone session (video only) and shows the floating live view
+    /// whenever the iPhone source is selected; tears it down otherwise.
+    /// Not called while recording — `stop()` re-syncs afterwards.
+    func syncPhonePreview() async {
+        guard !isRecording else { return }
+        guard captureSource == .phone, let phone = selectedPhone else {
+            phonePreview?.hide()
+            phoneManager.stop()
+            return
+        }
+        guard await Permissions.ensureCamera() else {
+            status = "Grant Camera permission to capture the iPhone."
+            return
+        }
+        do {
+            try phoneManager.start(deviceID: phone.uniqueID, includePhoneAudio: false,
+                                   includeMic: false, micDeviceID: nil)
+            phonePreview?.show(manager: phoneManager)
+        } catch {
+            status = "iPhone error: \(error.localizedDescription)"
         }
     }
 
@@ -175,10 +276,21 @@ final class RecordingController: ObservableObject {
             guard chose else { status = "Ready."; return }
         }
 
-        guard Permissions.ensureScreenRecording() else {
-            status = "Grant Screen Recording permission, then try again."
-            openScreenRecordingSettings()
-            return
+        if captureSource == .phone {
+            refreshPhones()
+            guard selectedPhone != nil else {
+                status = "No iPhone found. Connect it with a cable, unlock it, and tap Trust."
+                return
+            }
+            // USB device capture goes through AVFoundation, which is gated by
+            // the Camera permission rather than Screen Recording.
+            _ = await Permissions.ensureCamera()
+        } else {
+            guard Permissions.ensureScreenRecording() else {
+                status = "Grant Screen Recording permission, then try again."
+                openScreenRecordingSettings()
+                return
+            }
         }
 
         let selectedDisplay = displays.first(where: { $0.displayID == selectedDisplayID }) ?? displays.first
@@ -220,6 +332,11 @@ final class RecordingController: ObservableObject {
             let rect = pickedWindowFilter!.contentRect
             width  = max(2, Int(rect.width.rounded()))
             height = max(2, Int(rect.height.rounded()))
+        case .phone:
+            // The phone streams at its native resolution; we learn the size
+            // from the first frame (logged below).
+            width = 0
+            height = 0
         }
 
         // Loom-style 3-2-1 countdown before capture begins (so it isn't
@@ -245,34 +362,43 @@ final class RecordingController: ObservableObject {
             sourceDesc = "Display \(selectedDisplay!.displayID) (\(selectedDisplay!.width)×\(selectedDisplay!.height))"
         case .window:
             sourceDesc = "Window \"\(pickedWindowName ?? "?")\""
+        case .phone:
+            sourceDesc = "iPhone \"\(selectedPhone?.localizedName ?? "?")\" (USB)"
         }
+        let captureDesc = captureSource == .phone
+            ? "native phone resolution @ device rate"
+            : "\(width)×\(height) @ \(fps)fps  (scale \(captureScale.rawValue))"
         AppLog.log("""
 
         ════════ Mercury recording ════════
         \(AppLog.timestamp())
         File:          \(url.lastPathComponent)
         Source:        \(sourceDesc)
-        Capture:       \(width)×\(height) @ \(fps)fps  (scale \(captureScale.rawValue))
-        Output:        \(VideoCompositor.canvasWidth)×\(VideoCompositor.canvasHeight)
+        Capture:       \(captureDesc)
+        Output:        \(canvasSize.width)×\(canvasSize.height) (\(outputOrientation.rawValue))
         Camera:        \(useCamera ? "on (size \(String(format: "%.2f", cameraWidthFraction)))" : "off")
         Microphone:    \(useMic ? "on" : "off")
-        System audio:  \(useSystemAudio ? "on" : "off")
+        \(captureSource == .phone ? "iPhone audio: " : "System audio: ") \(useSystemAudio ? "on" : "off")
         Background:    \(background.name) (padding \(backgroundPadding.rawValue))
         Compression:   \(compressOutput ? compressionQuality.rawValue : "off")
         """)
 
         do {
+            let canvas = canvasSize
             let writer = try MovieWriter(url: url,
-                                       width: VideoCompositor.canvasWidth,
-                                       height: VideoCompositor.canvasHeight,
+                                       width: canvas.width,
+                                       height: canvas.height,
                                        fps: fps, hasAudio: hasAudio)
             writer.prepare()
             self.writer = writer
 
             let compositor = VideoCompositor(showCamera: useCamera,
                                              background: background,
-                                             padding: backgroundPadding)
+                                             padding: backgroundPadding,
+                                             canvasWidth: canvas.width,
+                                             canvasHeight: canvas.height)
             compositor.cameraWidthFraction = cameraWidthFraction
+            if captureSource == .phone { compositor.contentCornerFraction = 0.12 }
             self.compositor = compositor
 
             if hasAudio {
@@ -289,33 +415,53 @@ final class RecordingController: ObservableObject {
                 }
             }
 
-            let screen = ScreenCaptureManager()
-            screen.onVideo = { [weak self] sb in
+            let videoSink: (CMSampleBuffer) -> Void = { [weak self] sb in
                 guard let self, let compositor = self.compositor, let writer = self.writer else { return }
                 guard let src = CMSampleBufferGetImageBuffer(sb) else { return }
                 let pts = CMSampleBufferGetPresentationTimeStamp(sb)
                 let out = compositor.composite(src)
                 writer.appendVideo(out, at: pts)
             }
-            screen.onSystemAudio = { [weak self] sb in self?.mixer?.append(sb, from: .system) }
-            screen.onMic = { [weak self] sb in self?.mixer?.append(sb, from: .mic) }
-            screen.onStopped = { [weak self] error in
-                Task { @MainActor in self?.handleUnexpectedStop(error) }
-            }
-            self.screen = screen
 
             switch captureSource {
-            case .display:
-                try await screen.start(display: selectedDisplay!, width: width, height: height,
-                                       fps: fps,
-                                       captureSystemAudio: useSystemAudio,
-                                       captureMic: useMic,
-                                       micDeviceID: selectedMicID)
-            case .window:
-                try await screen.start(filter: pickedWindowFilter!, width: width, height: height,
-                                       fps: fps,
-                                       captureSystemAudio: useSystemAudio,
-                                       captureMic: useMic,
+            case .display, .window:
+                let screen = ScreenCaptureManager()
+                screen.onVideo = videoSink
+                screen.onSystemAudio = { [weak self] sb in self?.mixer?.append(sb, from: .system) }
+                screen.onMic = { [weak self] sb in self?.mixer?.append(sb, from: .mic) }
+                screen.onStopped = { [weak self] error in
+                    Task { @MainActor in self?.handleUnexpectedStop(error) }
+                }
+                self.screen = screen
+
+                if captureSource == .display {
+                    try await screen.start(display: selectedDisplay!, width: width, height: height,
+                                           fps: fps,
+                                           captureSystemAudio: useSystemAudio,
+                                           captureMic: useMic,
+                                           micDeviceID: selectedMicID)
+                } else {
+                    try await screen.start(filter: pickedWindowFilter!, width: width, height: height,
+                                           fps: fps,
+                                           captureSystemAudio: useSystemAudio,
+                                           captureMic: useMic,
+                                           micDeviceID: selectedMicID)
+                }
+
+            case .phone:
+                var loggedFormat = false
+                phoneManager.onVideo = { sb in
+                    if !loggedFormat, let px = CMSampleBufferGetImageBuffer(sb) {
+                        loggedFormat = true
+                        AppLog.log("iPhone frame:  \(CVPixelBufferGetWidth(px))×\(CVPixelBufferGetHeight(px))")
+                    }
+                    videoSink(sb)
+                }
+                // The phone session delivers phone audio + mic already mixed.
+                phoneManager.onAudio = { [weak self] sb in self?.mixer?.append(sb, from: .system) }
+                try phoneManager.start(deviceID: selectedPhoneID,
+                                       includePhoneAudio: useSystemAudio,
+                                       includeMic: useMic,
                                        micDeviceID: selectedMicID)
             }
 
@@ -342,6 +488,8 @@ final class RecordingController: ObservableObject {
         timer?.invalidate(); timer = nil
 
         await screen?.stop()
+        phoneManager.onVideo = nil
+        phoneManager.onAudio = nil
         cameraManager.onFrame = nil
         if !enableCamera { cameraManager.stop() }
         mixer?.finish()
@@ -352,6 +500,7 @@ final class RecordingController: ObservableObject {
 
         status = "Recording discarded."
         AppLog.log("Discarded:     recording cancelled by user\n═════════════════════════════════════")
+        await syncPhonePreview()
     }
 
     func stop() async {
@@ -361,6 +510,8 @@ final class RecordingController: ObservableObject {
         timer?.invalidate(); timer = nil
 
         await screen?.stop()
+        phoneManager.onVideo = nil
+        phoneManager.onAudio = nil
         // Stop feeding the compositor, but keep the camera session + self-view
         // running if the camera is still enabled.
         cameraManager.onFrame = nil
@@ -369,6 +520,7 @@ final class RecordingController: ObservableObject {
 
         let result = await writer?.finish()
         await teardown()
+        await syncPhonePreview()   // drop the mic from the phone session, keep the live view
 
         switch result {
         case .success(let url):

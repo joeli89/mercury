@@ -18,10 +18,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let tooltipController = TooltipController()
     let statusController = StatusController()
     let cameraPreview = CameraPreviewController()
+    let phonePreview = PhonePreviewController()
     private var panel: FloatingPanel?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         controller.cameraPreview = cameraPreview
+        controller.phonePreview = phonePreview
 
         let toolbarView = ToolbarView()
             .environmentObject(controller)

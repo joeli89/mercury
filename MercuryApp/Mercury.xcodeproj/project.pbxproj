@@ -22,6 +22,8 @@
 		5E577D5E1AD2E9BE61BD4FFB /* CountdownController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03612C7B445984A587B7827 /* CountdownController.swift */; };
 		6A1AB85FC8C7D378092D2D5C /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E07B10E8C93C9D2049FEAB82 /* Wise_Tapestry_07_NAmerica_EAsia_Green_Blue_Yellow_Lg.jpg */; };
 		6CF1A44C17640E4F633ACFC0 /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 930A1C83C7D565DD229A8F5D /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg */; };
+		762E1AE998444E1266453275 /* PhonePreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37190C7DA444AB4382336ADB /* PhonePreviewController.swift */; };
+		8815AA3C1EA5E5ED28D86A6A /* PhoneCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A17F8B52BFF12E982AE4972 /* PhoneCaptureManager.swift */; };
 		9040BF17828074B4D0489A29 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08157757FCA610332433F75C /* Permissions.swift */; };
 		951E3E4D3E03DF40969AFA24 /* MovieWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6DB6AB2438C813D407BE69 /* MovieWriter.swift */; };
 		9BE1C9708E7F89FF307F2B6F /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8B403BC4E7AD36CE1359B397 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */; };
@@ -50,10 +52,12 @@
 		1F592C9703C5E4110F599CED /* WindowPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowPicker.swift; sourceTree = "<group>"; };
 		27AA1997D2F0B287DFA0C2F3 /* Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_06_NAmerica_SAmerica_Red_Blue_Lg.jpg; sourceTree = "<group>"; };
 		2C2F5680D6E5CC798B2E27E5 /* VideoCompositor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompositor.swift; sourceTree = "<group>"; };
+		37190C7DA444AB4382336ADB /* PhonePreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonePreviewController.swift; sourceTree = "<group>"; };
 		3B6DB6AB2438C813D407BE69 /* MovieWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieWriter.swift; sourceTree = "<group>"; };
 		47E3A744EDD99F57DE801FF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48C714E432B61140FD1EA0B8 /* Wise_Tapestry_Platform_Full_Lg_v2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_Platform_Full_Lg_v2.jpg; sourceTree = "<group>"; };
 		590FA74BCF5DB7884E8C404F /* Mercury.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mercury.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A17F8B52BFF12E982AE4972 /* PhoneCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneCaptureManager.swift; sourceTree = "<group>"; };
 		6DAD3334594444D3C856B0D0 /* Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Wise_Tapestry_09_C+SAmerica_Europe_Pink_Yellow_Lg.jpg"; sourceTree = "<group>"; };
 		7366415561735EFEE3E16812 /* AppLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLog.swift; sourceTree = "<group>"; };
 		74D1B2E64BA72C9C3FDBAB01 /* ScreenCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureManager.swift; sourceTree = "<group>"; };
@@ -135,6 +139,8 @@
 				7E3E6BC4124CBF6CCF2ADE33 /* MercuryApp.swift */,
 				3B6DB6AB2438C813D407BE69 /* MovieWriter.swift */,
 				08157757FCA610332433F75C /* Permissions.swift */,
+				5A17F8B52BFF12E982AE4972 /* PhoneCaptureManager.swift */,
+				37190C7DA444AB4382336ADB /* PhonePreviewController.swift */,
 				A951BDAF2EAD5BCB9F060AD6 /* RecordingController.swift */,
 				74D1B2E64BA72C9C3FDBAB01 /* ScreenCaptureManager.swift */,
 				8395DF1DAE19AC7FD0821B54 /* StatusController.swift */,
@@ -244,6 +250,8 @@
 				EB76B2C1553388D0FA5858A7 /* MercuryApp.swift in Sources */,
 				951E3E4D3E03DF40969AFA24 /* MovieWriter.swift in Sources */,
 				9040BF17828074B4D0489A29 /* Permissions.swift in Sources */,
+				8815AA3C1EA5E5ED28D86A6A /* PhoneCaptureManager.swift in Sources */,
+				762E1AE998444E1266453275 /* PhonePreviewController.swift in Sources */,
 				BDE8350A447165C8BF508A43 /* RecordingController.swift in Sources */,
 				28D31A4EB57C71BF2FACFD50 /* ScreenCaptureManager.swift in Sources */,
 				46E1D8D1921CFE2A1DB004E5 /* StatusController.swift in Sources */,

@@ -15,9 +15,15 @@ import AppKit
 /// Everything that doesn't change frame-to-frame (background, shadow, rounded
 /// mask, content placement) is computed once and cached.
 final class VideoCompositor {
-    // MARK: - Fixed output canvas
-    static let canvasWidth  = 1920
-    static let canvasHeight = 1080
+    // MARK: - Output canvas (landscape 1920×1080 by default, or portrait 1080×1920)
+    static let defaultCanvasWidth  = 1920
+    static let defaultCanvasHeight = 1080
+    let canvasWidth: Int
+    let canvasHeight: Int
+
+    /// Corner radius of the inset screen content, as a fraction of its
+    /// shorter side. 0.03 suits Mac windows; ~0.12 matches an iPhone screen.
+    var contentCornerFraction: CGFloat = 0.03
 
     private let ciContext: CIContext
     private let lock = NSLock()
@@ -52,8 +58,12 @@ final class VideoCompositor {
 
     init(showCamera: Bool,
          background: BackgroundOption = BackgroundOption.presets[0],
-         padding: BackgroundPadding = .medium) {
+         padding: BackgroundPadding = .medium,
+         canvasWidth: Int = VideoCompositor.defaultCanvasWidth,
+         canvasHeight: Int = VideoCompositor.defaultCanvasHeight) {
         self.showCamera = showCamera
+        self.canvasWidth = canvasWidth
+        self.canvasHeight = canvasHeight
         self.background = background
         self.paddingFraction = padding.fraction
         if let device = MTLCreateSystemDefaultDevice() {
@@ -75,8 +85,8 @@ final class VideoCompositor {
 
         var srcW = CVPixelBufferGetWidth(src)
         var srcH = CVPixelBufferGetHeight(src)
-        let cw = Self.canvasWidth
-        let ch = Self.canvasHeight
+        let cw = canvasWidth
+        let ch = canvasHeight
         let frame = CGRect(x: 0, y: 0, width: cw, height: ch)
 
         guard let out = makePixelBuffer(width: cw, height: ch) else { return src }
@@ -201,7 +211,7 @@ final class VideoCompositor {
         let transform = CGAffineTransform(scaleX: scale, y: scale)
             .concatenating(CGAffineTransform(translationX: originX, y: originY))
 
-        let radius = min(contentW, contentH) * 0.03
+        let radius = min(contentW, contentH) * contentCornerFraction
         let mask = roundedRect(extent: contentRect, radius: radius, color: .white)
 
         // Background layer.

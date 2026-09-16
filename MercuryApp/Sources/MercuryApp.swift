@@ -17,6 +17,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let controller = RecordingController()
     let tooltipController = TooltipController()
     let statusController = StatusController()
+    let sourceFlyout = SourceFlyoutController()
     let cameraPreview = CameraPreviewController()
     let phonePreview = PhonePreviewController()
     private var panel: FloatingPanel?
@@ -29,6 +30,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             .environmentObject(controller)
             .environmentObject(tooltipController)
             .environmentObject(statusController)
+            .environmentObject(sourceFlyout)
 
         let hosting = AutoSizingHostingView(rootView: AnyView(toolbarView))
         hosting.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -67,6 +69,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         tooltipController.hostPanel = panel
         tooltipController.hostView = hosting
         statusController.hostPanel = panel
+        sourceFlyout.hostPanel = panel
+        sourceFlyout.recording = controller
     }
 
     /// Sizes `panel` to `size` and positions it against the right edge of the

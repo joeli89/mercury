@@ -19,6 +19,7 @@ struct ToolbarView: View {
     @EnvironmentObject var controller: RecordingController
     @EnvironmentObject var tooltipController: TooltipController
     @EnvironmentObject var statusController: StatusController
+    @EnvironmentObject var sourceFlyout: SourceFlyoutController
 
     @State private var showSettings = false
     @State private var showBackgrounds = false
@@ -61,8 +62,6 @@ struct ToolbarView: View {
         switch id {
         case "record":   return "Record"
         case "discard":  return "Discard"
-        case "window":   return "Window"
-        case "phone":    return controller.captureSource == .phone ? "iPhone (selected)" : "iPhone"
         case "camera":   return controller.enableCamera ? "Camera on" : "Camera off"
         case "mic":      return controller.enableMicrophone ? "Mic on" : "Mic off"
         case "bg":       return "Background"
@@ -92,13 +91,8 @@ struct ToolbarView: View {
 
             divider
 
-            // Pick a window to record (native click-to-select)
-            iconButton("macwindow", id: "window") {
-                Task { await controller.chooseWindow() }
-            }
-
-            // Record a USB-connected iPhone (toggles back to display)
-            phoneButton
+            // What to record: Full Screen / Window / iPhone (hover flyout)
+            sourceButton
 
             // Toggle webcam on/off
             cameraToggleButton
@@ -171,22 +165,32 @@ struct ToolbarView: View {
         .background(frameTracker(id: "record"))
     }
 
-    private var phoneButton: some View {
-        let active = controller.captureSource == .phone
+    /// Source button: hover (or click) slides out the source flyout —
+    /// Full Screen / Window / iPhone — beside the toolbar.
+    private var sourceButton: some View {
+        let symbol: String
+        switch controller.captureSource {
+        case .display: symbol = "display"
+        case .window:  symbol = "macwindow"
+        case .phone:   symbol = "iphone"
+        }
         return Button {
-            controller.togglePhoneSource()
+            sourceFlyout.toggle()
         } label: {
-            Image(systemName: "iphone")
+            Image(systemName: symbol)
                 .font(.system(size: 15, weight: .medium))
-                .foregroundStyle(active ? Color.accentColor : Color.primary.opacity(hovered == "phone" ? 1.0 : 0.65))
+                .foregroundStyle(.primary.opacity(hovered == "source" || sourceFlyout.isShown ? 1.0 : 0.65))
                 .frame(width: 36, height: 36)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .disabled(controller.isRecording)
-        .onHover { inside in hovered = inside ? "phone" : nil }
+        .onHover { inside in
+            hovered = inside ? "source" : nil
+            if !controller.isRecording { sourceFlyout.buttonHover(inside) }
+        }
         .animation(.easeOut(duration: 0.15), value: hovered)
-        .background(frameTracker(id: "phone"))
+        .background(frameTracker(id: "source"))
     }
 
     private var cameraToggleButton: some View {
@@ -299,7 +303,7 @@ struct ToolbarView: View {
         Button {
             showBackgrounds.toggle()
         } label: {
-            controller.background.swatch
+            controller.effectiveBackground.swatch
                 .frame(width: 18, height: 18)
                 .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
                 .overlay(
@@ -321,18 +325,35 @@ struct ToolbarView: View {
 
     private var backgroundPopover: some View {
         VStack(alignment: .leading, spacing: 10) {
+            Text("Layout").font(.headline)
+            Picker("", selection: $controller.layout) {
+                ForEach(FrameLayout.allCases) { l in
+                    Text(l.rawValue).tag(l)
+                }
+            }
+            .labelsHidden()
+            .pickerStyle(.segmented)
+            .disabled(controller.isRecording)
+            Text(controller.layout == .fullWidth
+                 ? "The recording fills the frame edge to edge."
+                 : "A background wraps the recording with a small margin.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
             Text("Background").font(.headline)
+                .padding(.top, 4)
 
             let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 3)
             var options: [BackgroundOption] {
-                var list = BackgroundOption.presets
+                var list = BackgroundOption.presets.filter { !$0.isNone }
                 if controller.background.id == "custom" { list.append(controller.background) }
                 return list
             }
 
             LazyVGrid(columns: columns, spacing: 10) {
                 ForEach(options) { option in
-                    let selected = controller.background.id == option.id
+                    let selected = controller.layout == .hug && controller.background.id == option.id
                     Button {
                         controller.background = option
                     } label: {
@@ -354,18 +375,8 @@ struct ToolbarView: View {
             }
 
             HStack {
-                Text("Padding")
-                Picker("", selection: $controller.backgroundPadding) {
-                    ForEach(BackgroundPadding.allCases) { p in
-                        Text(p.rawValue).tag(p)
-                    }
-                }
-                .labelsHidden()
-                .pickerStyle(.segmented)
-                .frame(width: 120)
-                .disabled(controller.isRecording || controller.background.isNone)
                 Spacer()
-                Button("Image…") { controller.chooseBackgroundImage() }
+                Button("Custom image…") { controller.chooseBackgroundImage() }
                     .disabled(controller.isRecording)
             }
         }

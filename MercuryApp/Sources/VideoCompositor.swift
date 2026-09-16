@@ -15,11 +15,30 @@ import AppKit
 /// Everything that doesn't change frame-to-frame (background, shadow, rounded
 /// mask, content placement) is computed once and cached.
 final class VideoCompositor {
-    // MARK: - Output canvas (landscape 1920×1080 by default, or portrait 1080×1920)
-    static let defaultCanvasWidth  = 1920
-    static let defaultCanvasHeight = 1080
+    // MARK: - Output canvas
+    //
+    // The canvas takes the shape of the source: 1920 wide for landscape
+    // sources, 1080 wide for portrait ones, with the height following the
+    // source's aspect ratio. With no background the content fills the canvas
+    // edge to edge ("full width"); with a background the canvas is enlarged by
+    // a fixed margin on every side so the background hugs the content ("hug").
+    static let landscapeWidth = 1920
+    static let portraitWidth  = 1080
+    static let hugMarginFraction: CGFloat = 0.05   // of canvas width
     let canvasWidth: Int
     let canvasHeight: Int
+
+    /// Canvas size for a source of the given pixel size.
+    static func canvasSize(forSourceWidth w: Int, height h: Int, hasBackground: Bool) -> (width: Int, height: Int) {
+        guard w > 0, h > 0 else { return (landscapeWidth, landscapeWidth * 9 / 16) }
+        let cw = h > w ? portraitWidth : landscapeWidth
+        let margin = hasBackground ? CGFloat(cw) * hugMarginFraction : 0
+        let contentW = CGFloat(cw) - 2 * margin
+        let contentH = CGFloat(h) * contentW / CGFloat(w)
+        var ch = Int((contentH + 2 * margin).rounded())
+        if ch % 2 == 1 { ch += 1 }   // encoders want even dimensions
+        return (cw, max(2, ch))
+    }
 
     /// Corner radius of the inset screen content, as a fraction of its
     /// shorter side. 0.03 suits Mac windows; ~0.12 matches an iPhone screen.
@@ -41,7 +60,6 @@ final class VideoCompositor {
 
     // Background
     private let background: BackgroundOption
-    private let paddingFraction: CGFloat
 
     /// Cached, size-dependent layers.
     private var layout: Layout?
@@ -58,14 +76,12 @@ final class VideoCompositor {
 
     init(showCamera: Bool,
          background: BackgroundOption = BackgroundOption.presets[0],
-         padding: BackgroundPadding = .medium,
-         canvasWidth: Int = VideoCompositor.defaultCanvasWidth,
-         canvasHeight: Int = VideoCompositor.defaultCanvasHeight) {
+         canvasWidth: Int,
+         canvasHeight: Int) {
         self.showCamera = showCamera
         self.canvasWidth = canvasWidth
         self.canvasHeight = canvasHeight
         self.background = background
-        self.paddingFraction = padding.fraction
         if let device = MTLCreateSystemDefaultDevice() {
             ciContext = CIContext(mtlDevice: device)
         } else {
@@ -196,7 +212,7 @@ final class VideoCompositor {
 
         let fw = CGFloat(cw), fh = CGFloat(ch)
         let srcW = CGFloat(sw), srcH = CGFloat(sh)
-        let pad = paddingFraction * min(fw, fh)
+        let pad = Self.hugMarginFraction * fw
         let availW = fw - 2 * pad
         let availH = fh - 2 * pad
 

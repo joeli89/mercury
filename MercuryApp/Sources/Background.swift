@@ -48,18 +48,6 @@ struct BackgroundOption: Identifiable, Hashable {
 }
 
 /// Amount of empty space around the inset screen content.
-enum BackgroundPadding: String, CaseIterable, Identifiable {
-    case small = "S", medium = "M", large = "L"
-    var id: String { rawValue }
-    var fraction: CGFloat {
-        switch self {
-        case .small: return 0.035
-        case .medium: return 0.07
-        case .large: return 0.12
-        }
-    }
-}
-
 // MARK: - Color helpers
 
 extension CIColor {

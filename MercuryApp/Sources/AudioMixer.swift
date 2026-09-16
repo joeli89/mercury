@@ -7,8 +7,10 @@ import AVFoundation
 /// emitted as ready-to-write CMSampleBuffers. A small latency window lets the two
 /// sources' samples line up before a region is flushed.
 ///
-/// All methods must be called from a single serial queue (the capture audio queue).
+/// Thread-safe: `append` and `finish` may be called from different queues
+/// (e.g. the capture audio queue and the main thread on stop).
 final class AudioMixer {
+    private let lock = NSLock()
     enum Source { case system, mic }
 
     private let sampleRate: Double = 48000
@@ -38,6 +40,8 @@ final class AudioMixer {
     }
 
     func append(_ sampleBuffer: CMSampleBuffer, from _: Source) {
+        lock.lock(); defer { lock.unlock() }
+        guard !finished else { return }
         guard let (startIndex, samples) = canonicalSamples(from: sampleBuffer) else { return }
         let frames = samples.count / channels
         guard frames > 0 else { return }
@@ -68,8 +72,12 @@ final class AudioMixer {
     }
 
     func finish() {
+        lock.lock(); defer { lock.unlock() }
+        guard !finished else { return }
+        finished = true
         flush(force: true)
     }
+    private var finished = false
 
     private func flush(force: Bool) {
         let flushUntil = force ? highestWritten : (highestWritten - latencyFrames)

@@ -11,11 +11,12 @@ enum CaptureSource: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-/// Output canvas orientation. Auto = portrait for iPhone, landscape otherwise.
-enum OutputOrientation: String, CaseIterable, Identifiable {
-    case auto = "Auto"
-    case landscape = "Landscape"
-    case portrait = "Portrait"
+/// How the recording sits in the frame.
+/// Full width: content edge to edge, no background. Hug: a background wraps
+/// the content with a small margin.
+enum FrameLayout: String, CaseIterable, Identifiable {
+    case fullWidth = "Full width"
+    case hug = "Hug"
     var id: String { rawValue }
 }
 
@@ -45,7 +46,6 @@ final class RecordingController: ObservableObject {
     @Published var selectedPhoneID: String? { didSet { if selectedPhoneID != oldValue { Task { await syncPhonePreview() } } } }
 
     @Published var captureSource: CaptureSource = .display { didSet { if captureSource != oldValue { Task { await syncPhonePreview() } } } }
-    @Published var outputOrientation: OutputOrientation = .auto
     @Published var selectedDisplayID: CGDirectDisplayID?
     @Published var selectedCameraID: String? { didSet { if selectedCameraID != oldValue { Task { await syncCameraPreview() } } } }
     @Published var selectedMicID: String?
@@ -72,8 +72,25 @@ final class RecordingController: ObservableObject {
     @Published var compressionProgress: Double = 0
 
     // Background compositing (Screen Studio-style)
-    @Published var background: BackgroundOption = BackgroundOption.presets[4]  // Mint
-    @Published var backgroundPadding: BackgroundPadding = .medium
+    @Published var layout: FrameLayout = .hug {
+        didSet {
+            // Hug needs a background; pick the first real one if none is set.
+            if layout == .hug, background.isNone,
+               let first = BackgroundOption.presets.first(where: { !$0.isNone }) {
+                background = first
+            }
+        }
+    }
+    @Published var background: BackgroundOption = BackgroundOption.presets[4] {
+        didSet {
+            // Choosing a background implies Hug.
+            if !background.isNone, layout == .fullWidth { layout = .hug }
+        }
+    }
+    /// Background actually rendered: none in Full width, the chosen one in Hug.
+    var effectiveBackground: BackgroundOption {
+        layout == .hug ? background : BackgroundOption.presets[0]
+    }
     @Published var outputFolder: URL = FileManager.default
         .urls(for: .moviesDirectory, in: .userDomainMask).first
         ?? FileManager.default.homeDirectoryForCurrentUser
@@ -123,18 +140,6 @@ final class RecordingController: ObservableObject {
         phones.first { $0.uniqueID == selectedPhoneID }
     }
 
-    /// The canvas the recording is rendered onto.
-    var canvasSize: (width: Int, height: Int) {
-        let portrait: Bool
-        switch outputOrientation {
-        case .auto:      portrait = captureSource == .phone
-        case .landscape: portrait = false
-        case .portrait:  portrait = true
-        }
-        return portrait
-            ? (VideoCompositor.defaultCanvasHeight, VideoCompositor.defaultCanvasWidth)
-            : (VideoCompositor.defaultCanvasWidth, VideoCompositor.defaultCanvasHeight)
-    }
 
     // MARK: - Device discovery
 
@@ -173,19 +178,31 @@ final class RecordingController: ObservableObject {
         if selectedPhone == nil { selectedPhoneID = phones.first?.uniqueID }
     }
 
-    /// Toolbar action: switch to iPhone capture (or back to the display).
-    func togglePhoneSource() {
-        if captureSource == .phone {
-            captureSource = .display
-            status = "Ready."
-            return
-        }
+    /// Source menu: record a whole display.
+    func selectDisplaySource(_ displayID: CGDirectDisplayID? = nil) {
+        if let displayID { selectedDisplayID = displayID }
+        captureSource = .display
+        status = "Ready."
+    }
+
+    /// Source menu: record a USB-connected iPhone.
+    func selectPhoneSource(_ deviceID: String? = nil) {
         refreshPhones()
+        if let deviceID { selectedPhoneID = deviceID }
         captureSource = .phone
         if let phone = selectedPhone {
             status = "Ready — \(phone.localizedName) selected."
         } else {
             status = "No iPhone found. Connect it with a cable, unlock it, and tap Trust."
+        }
+    }
+
+    /// Short label for the current source (toolbar tooltip).
+    var sourceDescription: String {
+        switch captureSource {
+        case .display: return displays.count > 1 ? "Display \(selectedDisplayID.map(String.init) ?? "")" : "Full Screen"
+        case .window:  return pickedWindowName.map { "Window: \($0)" } ?? "Window"
+        case .phone:   return selectedPhone?.localizedName ?? "iPhone"
         }
     }
 
@@ -333,11 +350,21 @@ final class RecordingController: ObservableObject {
             width  = max(2, Int(rect.width.rounded()))
             height = max(2, Int(rect.height.rounded()))
         case .phone:
-            // The phone streams at its native resolution; we learn the size
-            // from the first frame (logged below).
-            width = 0
-            height = 0
+            // Native phone resolution. The live view has usually delivered a
+            // frame already; otherwise fall back to the device's active format.
+            if let size = phoneManager.lastFrameSize {
+                width = size.width; height = size.height
+            } else if let phone = selectedPhone {
+                let dims = CMVideoFormatDescriptionGetDimensions(phone.activeFormat.formatDescription)
+                width = Int(dims.width); height = Int(dims.height)
+            } else {
+                width = 0; height = 0
+            }
         }
+        // Canvas follows the source's shape: full width with no background,
+        // hugged by a fixed margin when a background is on.
+        let canvas = VideoCompositor.canvasSize(forSourceWidth: width, height: height,
+                                                hasBackground: layout == .hug)
 
         // Loom-style 3-2-1 countdown before capture begins (so it isn't
         // recorded). Bail out if the user isn't recording anymore.
@@ -366,7 +393,7 @@ final class RecordingController: ObservableObject {
             sourceDesc = "iPhone \"\(selectedPhone?.localizedName ?? "?")\" (USB)"
         }
         let captureDesc = captureSource == .phone
-            ? "native phone resolution @ device rate"
+            ? "\(width)×\(height) native @ device rate"
             : "\(width)×\(height) @ \(fps)fps  (scale \(captureScale.rawValue))"
         AppLog.log("""
 
@@ -375,16 +402,15 @@ final class RecordingController: ObservableObject {
         File:          \(url.lastPathComponent)
         Source:        \(sourceDesc)
         Capture:       \(captureDesc)
-        Output:        \(canvasSize.width)×\(canvasSize.height) (\(outputOrientation.rawValue))
+        Output:        \(canvas.width)×\(canvas.height) (\(layout.rawValue.lowercased()))
         Camera:        \(useCamera ? "on (size \(String(format: "%.2f", cameraWidthFraction)))" : "off")
         Microphone:    \(useMic ? "on" : "off")
         \(captureSource == .phone ? "iPhone audio: " : "System audio: ") \(useSystemAudio ? "on" : "off")
-        Background:    \(background.name) (padding \(backgroundPadding.rawValue))
+        Background:    \(effectiveBackground.name)
         Compression:   \(compressOutput ? compressionQuality.rawValue : "off")
         """)
 
         do {
-            let canvas = canvasSize
             let writer = try MovieWriter(url: url,
                                        width: canvas.width,
                                        height: canvas.height,
@@ -393,8 +419,7 @@ final class RecordingController: ObservableObject {
             self.writer = writer
 
             let compositor = VideoCompositor(showCamera: useCamera,
-                                             background: background,
-                                             padding: backgroundPadding,
+                                             background: effectiveBackground,
                                              canvasWidth: canvas.width,
                                              canvasHeight: canvas.height)
             compositor.cameraWidthFraction = cameraWidthFraction

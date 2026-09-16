@@ -46,17 +46,6 @@ struct ContentView: View {
                             .disabled(controller.isRecording)
                     }
                     HStack {
-                        labelWithHint("Orientation", "Canvas shape of the finished video. Auto uses portrait (1080×1920) for iPhone recordings and landscape (1920×1080) for everything else.")
-                        Picker("", selection: $controller.outputOrientation) {
-                            ForEach(OutputOrientation.allCases) { o in
-                                Text(o.rawValue).tag(o)
-                            }
-                        }
-                        .labelsHidden()
-                        .pickerStyle(.segmented)
-                        .disabled(controller.isRecording)
-                    }
-                    HStack {
                         labelWithHint("Frame rate", "Frames per second. 60 is smoother for motion; 30 produces smaller files.")
                         Picker("", selection: $controller.fps) {
                             Text("30 fps").tag(30)

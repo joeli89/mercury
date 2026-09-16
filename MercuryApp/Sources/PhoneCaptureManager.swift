@@ -29,6 +29,13 @@ final class PhoneCaptureManager: NSObject,
 
     private(set) var isRunning = false
     private(set) var currentDeviceID: String?
+    private let sizeLock = NSLock()
+    private var _lastFrameSize: (width: Int, height: Int)?
+    /// Pixel size of the most recent video frame (nil until the first frame).
+    var lastFrameSize: (width: Int, height: Int)? {
+        sizeLock.lock(); defer { sizeLock.unlock() }
+        return _lastFrameSize
+    }
     private var observers: [NSObjectProtocol] = []
     private static var optedIn = false
 
@@ -170,6 +177,10 @@ final class PhoneCaptureManager: NSObject,
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
         if output === videoOutput {
+            if let px = CMSampleBufferGetImageBuffer(sampleBuffer) {
+                let size = (CVPixelBufferGetWidth(px), CVPixelBufferGetHeight(px))
+                sizeLock.lock(); _lastFrameSize = size; sizeLock.unlock()
+            }
             onPreviewFrame?(sampleBuffer)
             onVideo?(sampleBuffer)
         } else if output === audioOutput {

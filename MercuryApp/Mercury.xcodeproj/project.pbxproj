@@ -24,6 +24,7 @@
 		6CF1A44C17640E4F633ACFC0 /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 930A1C83C7D565DD229A8F5D /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg */; };
 		762E1AE998444E1266453275 /* PhonePreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37190C7DA444AB4382336ADB /* PhonePreviewController.swift */; };
 		8815AA3C1EA5E5ED28D86A6A /* PhoneCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A17F8B52BFF12E982AE4972 /* PhoneCaptureManager.swift */; };
+		8897198AFA3B4BE8A7613776 /* SourceFlyoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942135B8ACB54EBD2E4EC7A7 /* SourceFlyoutController.swift */; };
 		9040BF17828074B4D0489A29 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08157757FCA610332433F75C /* Permissions.swift */; };
 		951E3E4D3E03DF40969AFA24 /* MovieWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6DB6AB2438C813D407BE69 /* MovieWriter.swift */; };
 		9BE1C9708E7F89FF307F2B6F /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8B403BC4E7AD36CE1359B397 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */; };
@@ -66,6 +67,7 @@
 		8B403BC4E7AD36CE1359B397 /* Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_10_MiddleEast_Australasia_Pink_Blue_Lg.jpg; sourceTree = "<group>"; };
 		8F524F7FD54FE9594108D4B6 /* Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_01_UK_Europe_Orange_Blue_Lg.jpg; sourceTree = "<group>"; };
 		930A1C83C7D565DD229A8F5D /* Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wise_Tapestry_04_Europe_SEAsia_Blue_Yellow_Lg.jpg; sourceTree = "<group>"; };
+		942135B8ACB54EBD2E4EC7A7 /* SourceFlyoutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceFlyoutController.swift; sourceTree = "<group>"; };
 		A8C3BE4A7D2EC556F65DCDF0 /* CameraCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureManager.swift; sourceTree = "<group>"; };
 		A951BDAF2EAD5BCB9F060AD6 /* RecordingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingController.swift; sourceTree = "<group>"; };
 		B03612C7B445984A587B7827 /* CountdownController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownController.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				37190C7DA444AB4382336ADB /* PhonePreviewController.swift */,
 				A951BDAF2EAD5BCB9F060AD6 /* RecordingController.swift */,
 				74D1B2E64BA72C9C3FDBAB01 /* ScreenCaptureManager.swift */,
+				942135B8ACB54EBD2E4EC7A7 /* SourceFlyoutController.swift */,
 				8395DF1DAE19AC7FD0821B54 /* StatusController.swift */,
 				191D3B308AF619C3CC8594F9 /* ToolbarView.swift */,
 				F68E23475B409D5D808E98A1 /* TooltipController.swift */,
@@ -254,6 +257,7 @@
 				762E1AE998444E1266453275 /* PhonePreviewController.swift in Sources */,
 				BDE8350A447165C8BF508A43 /* RecordingController.swift in Sources */,
 				28D31A4EB57C71BF2FACFD50 /* ScreenCaptureManager.swift in Sources */,
+				8897198AFA3B4BE8A7613776 /* SourceFlyoutController.swift in Sources */,
 				46E1D8D1921CFE2A1DB004E5 /* StatusController.swift in Sources */,
 				2BF71639851DF7F7FB73A769 /* ToolbarView.swift in Sources */,
 				507D2AED955EADA88C37CB7E /* TooltipController.swift in Sources */,

@@ -48,6 +48,12 @@ final class VideoCompositor {
     /// shorter side. 0.03 suits Mac windows; ~0.12 matches an iPhone screen.
     var contentCornerFraction: CGFloat = 0.03
 
+    /// Glass bezel around the content (backgrounds only): width as a fraction
+    /// of the content's shorter side, capped in pixels. Mirrors the live
+    /// preview's Liquid Glass border.
+    var bezelFraction: CGFloat = 0.033
+    var bezelMaxWidth: CGFloat = 32
+
     private let ciContext: CIContext
     private let lock = NSLock()
     private var latestCamera: CIImage?
@@ -220,8 +226,14 @@ final class VideoCompositor {
         let availW = fw - 2 * pad
         let availH = fh - 2 * pad
 
+        // Bezel width is derived from the content size at the *unbezelled* fit,
+        // then the content is refitted inside (pad + bezel) so the bezel never
+        // spills past the margin.
+        let fit0 = min(availW / srcW, availH / srcH)
+        let bezel = min(min(srcW, srcH) * fit0 * bezelFraction, bezelMaxWidth)
+
         // Scale source to fit within the padded area (maintain aspect ratio).
-        let scale = min(availW / srcW, availH / srcH)
+        let scale = min((availW - 2 * bezel) / srcW, (availH - 2 * bezel) / srcH)
         let contentW = srcW * scale
         let contentH = srcH * scale
         let originX = (fw - contentW) / 2
@@ -238,16 +250,24 @@ final class VideoCompositor {
         let frame = CGRect(x: 0, y: 0, width: fw, height: fh)
         let bg = backgroundImage(in: frame)
 
-        // Drop shadow: blurred black rounded rect, nudged down, behind the content.
+        // Glass bezel geometry: a ring `bezel` wide around the content.
+        let outerRect = contentRect.insetBy(dx: -bezel, dy: -bezel)
+        let outerRadius = radius + bezel
+
+        // Drop shadow: blurred black rounded rect, nudged down, behind the bezel.
         let blur = min(fw, fh) * 0.02
-        var shadow = roundedRect(extent: contentRect, radius: radius, color: .black)
+        var shadow = roundedRect(extent: outerRect, radius: outerRadius, color: .black)
             .applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: blur])
             .applyingFilter("CIColorMatrix", parameters: [
                 "inputAVector": CIVector(x: 0, y: 0, z: 0, w: 0.35)
             ])
         shadow = shadow.transformed(by: CGAffineTransform(translationX: 0, y: -blur * 0.6))
 
-        let backdrop = shadow.composited(over: bg).cropped(to: frame)
+        let glass = glassBezel(background: bg, frame: frame,
+                               outer: outerRect, outerRadius: outerRadius,
+                               inner: contentRect, innerRadius: radius)
+
+        let backdrop = glass.composited(over: shadow.composited(over: bg)).cropped(to: frame)
 
         let layout = Layout(canvasWidth: cw, canvasHeight: ch,
                             sourceWidth: sw, sourceHeight: sh,
@@ -255,6 +275,54 @@ final class VideoCompositor {
                             mask: mask, backdrop: backdrop)
         self.layout = layout
         return layout
+    }
+
+    /// A frosted ring between `inner` and `outer`: the background behind it,
+    /// blurred and lifted, with a bright outer edge and a softer inner edge —
+    /// a still-image stand-in for Liquid Glass.
+    private func glassBezel(background bg: CIImage, frame: CGRect,
+                            outer: CGRect, outerRadius: CGFloat,
+                            inner: CGRect, innerRadius: CGFloat) -> CIImage {
+        let bezelWidth = inner.minX - outer.minX
+        guard bezelWidth > 0.5 else { return CIImage.empty() }
+
+        // Ring mask: white outer rounded rect with the content cut out.
+        let ringMask = roundedRect(extent: inner, radius: innerRadius, color: .black)
+            .composited(over: roundedRect(extent: outer, radius: outerRadius, color: .white))
+
+        // Frosted fill: blurred, slightly brighter, slightly desaturated background
+        // with a white veil.
+        let frosted = bg.clampedToExtent()
+            .applyingFilter("CIGaussianBlur", parameters: [kCIInputRadiusKey: max(12, bezelWidth * 1.2)])
+            .cropped(to: frame)
+            .applyingFilter("CIColorControls", parameters: [
+                kCIInputSaturationKey: 0.85,
+                kCIInputBrightnessKey: 0.05,
+                kCIInputContrastKey: 1.0
+            ])
+        let veil = CIImage(color: CIColor(red: 1, green: 1, blue: 1, alpha: 0.22)).cropped(to: frame)
+        let fill = veil.composited(over: frosted)
+            .applyingFilter("CIBlendWithMask", parameters: [
+                kCIInputBackgroundImageKey: CIImage.empty(),
+                kCIInputMaskImageKey: ringMask
+            ])
+
+        // Edge highlights: ~1.5px bright line on the outer edge, softer on the inner.
+        let line = max(1.5, bezelWidth * 0.06)
+        let outerEdgeMask = roundedRect(extent: outer.insetBy(dx: line, dy: line),
+                                        radius: max(0, outerRadius - line), color: .black)
+            .composited(over: roundedRect(extent: outer, radius: outerRadius, color: .white))
+        let innerEdgeMask = roundedRect(extent: inner, radius: innerRadius, color: .black)
+            .composited(over: roundedRect(extent: inner.insetBy(dx: -line, dy: -line),
+                                          radius: innerRadius + line, color: .white))
+        let outerEdge = CIImage(color: CIColor(red: 1, green: 1, blue: 1, alpha: 0.6)).cropped(to: frame)
+            .applyingFilter("CIBlendWithMask", parameters: [
+                kCIInputBackgroundImageKey: CIImage.empty(), kCIInputMaskImageKey: outerEdgeMask])
+        let innerEdge = CIImage(color: CIColor(red: 1, green: 1, blue: 1, alpha: 0.35)).cropped(to: frame)
+            .applyingFilter("CIBlendWithMask", parameters: [
+                kCIInputBackgroundImageKey: CIImage.empty(), kCIInputMaskImageKey: innerEdgeMask])
+
+        return innerEdge.composited(over: outerEdge.composited(over: fill))
     }
 
     private func backgroundImage(in frame: CGRect) -> CIImage {

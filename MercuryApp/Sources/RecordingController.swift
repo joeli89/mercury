@@ -21,6 +21,40 @@ enum FrameLayout: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
+/// Recording quality presets — the only encoder knob users see.
+/// Values from the bench on real screen recordings (bench/go.sh).
+enum RecordingQuality: String, CaseIterable, Identifiable {
+    case small = "Small"
+    case balanced = "Balanced"
+    case high = "High"
+    var id: String { rawValue }
+
+    /// Hardware constant-quality value (0…1).
+    var quality: Double {
+        switch self {
+        case .small:    return 0.55   // ~470 MB/h at 1080p, VMAF ~92
+        case .balanced: return 0.65   // ~730 MB/h, VMAF ~94
+        case .high:     return 0.75   // ~1.3 GB/h, VMAF ~96
+        }
+    }
+    var fps: Int { self == .high ? 60 : 30 }
+    /// Bitrate ceiling so busy screens can't run away.
+    var maxBitrate: Int {
+        switch self {
+        case .small:    return 4_000_000
+        case .balanced: return 8_000_000
+        case .high:     return 16_000_000
+        }
+    }
+    var summary: String {
+        switch self {
+        case .small:    return "Smallest files. Fine for Slack and email."
+        case .balanced: return "Sharp text, small files. Recommended."
+        case .high:     return "60 fps, near-lossless. For marketing and App Store previews."
+        }
+    }
+}
+
 enum CaptureScale: String, CaseIterable, Identifiable {
     case one     = "1x"
     case oneHalf = "1.5x"
@@ -63,17 +97,21 @@ final class RecordingController: ObservableObject {
     /// Fraction of the frame width used for the camera bubble (0.10 = S, 0.13 = M, 0.20 = L).
     @Published var cameraWidthFraction: CGFloat = 0.13
 
-    @Published var fps = 60
+    @Published var recordingQuality: RecordingQuality = .balanced
+    var fps: Int { recordingQuality.fps }
     @Published var captureScale: CaptureScale = .oneHalf
 
-    // FFmpeg post-compression
-    @Published var compressOutput = true
+    // FFmpeg post-compression — optional extra step, only offered when an
+    // FFmpeg install is found on this Mac. Off by default: the hardware
+    // encoder's constant-quality mode already beats it on quality-per-byte.
+    @Published var compressOutput = false
+    let ffmpegAvailable = FFmpegCompressor.isAvailable
     @Published var compressionQuality: FFmpegCompressor.Quality = .medium
     @Published var isCompressing = false
     @Published var compressionProgress: Double = 0
 
     // Background compositing (Screen Studio-style)
-    @Published var layout: FrameLayout = .hug
+    @Published var layout: FrameLayout = .fullWidth
     @Published var background: BackgroundOption = BackgroundOption.presets[4]
     @Published var outputFolder: URL = FileManager.default
         .urls(for: .moviesDirectory, in: .userDomainMask).first
@@ -362,7 +400,7 @@ final class RecordingController: ObservableObject {
         // output folder only ever contains the finished (compressed) file.
         let filename = Self.newFilename()
         let finalURL = outputFolder.appendingPathComponent(filename)
-        let url = compressOutput
+        let url = (compressOutput && ffmpegAvailable)
             ? FileManager.default.temporaryDirectory.appendingPathComponent(filename)
             : finalURL
         pendingFinalURL = finalURL
@@ -387,19 +425,23 @@ final class RecordingController: ObservableObject {
         File:          \(url.lastPathComponent)
         Source:        \(sourceDesc)
         Capture:       \(captureDesc)
+        Quality:       \(recordingQuality.rawValue)
         Output:        \(canvas.width)×\(canvas.height) (\(background.isNone ? "content only" : layout.rawValue.lowercased()))
         Camera:        \(useCamera ? "on — \(cameras.first { $0.uniqueID == selectedCameraID }?.localizedName ?? "default") (size \(String(format: "%.2f", cameraWidthFraction)))" : "off")
         Microphone:    \(useMic ? "on" : "off")
         \(captureSource == .phone ? "iPhone audio: " : "System audio: ") \(useSystemAudio ? "on" : "off")
         Background:    \(background.name)
-        Compression:   \(compressOutput ? compressionQuality.rawValue : "off")
+        FFmpeg:        \(compressOutput ? compressionQuality.rawValue : (ffmpegAvailable ? "off" : "not installed"))
         """)
 
         do {
             let writer = try MovieWriter(url: url,
                                        width: canvas.width,
                                        height: canvas.height,
-                                       fps: fps, hasAudio: hasAudio)
+                                       fps: fps, hasAudio: hasAudio,
+                                       quality: recordingQuality.quality,
+                                       maxBitrate: recordingQuality.maxBitrate)
+            AppLog.log("Encoder:       \(writer.encoderSummary)")
             writer.prepare()
             self.writer = writer
 
@@ -425,11 +467,21 @@ final class RecordingController: ObservableObject {
                 }
             }
 
+            var firstFrame = true
             let videoSink: (CMSampleBuffer) -> Void = { [weak self] sb in
                 guard let self, let compositor = self.compositor, let writer = self.writer else { return }
                 guard let src = CMSampleBufferGetImageBuffer(sb) else { return }
                 let pts = CMSampleBufferGetPresentationTimeStamp(sb)
+                let logThis = firstFrame
+                if logThis {
+                    firstFrame = false
+                    AppLog.log("First frame:   \(CVPixelBufferGetWidth(src))×\(CVPixelBufferGetHeight(src)) — compositing…")
+                }
+                let t0 = CACurrentMediaTime()
                 let out = compositor.composite(src)
+                if logThis {
+                    AppLog.log("Composited:    \(CVPixelBufferGetWidth(out))×\(CVPixelBufferGetHeight(out)) in \(Int((CACurrentMediaTime() - t0) * 1000))ms")
+                }
                 writer.appendVideo(out, at: pts)
             }
 
@@ -537,7 +589,7 @@ final class RecordingController: ObservableObject {
             let rawSize = (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int) ?? 0
             AppLog.log("Raw file:      \(AppLog.size(rawSize)) written")
             let finalURL = pendingFinalURL ?? url
-            if compressOutput {
+            if compressOutput && ffmpegAvailable {
                 await compressFile(url, to: finalURL, rawSize: rawSize)
             } else {
                 lastOutputURL = url

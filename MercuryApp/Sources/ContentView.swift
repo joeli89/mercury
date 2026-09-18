@@ -46,15 +46,19 @@ struct ContentView: View {
                             .disabled(controller.isRecording)
                     }
                     HStack {
-                        labelWithHint("Frame rate", "Frames per second. 60 is smoother for motion; 30 produces smaller files.")
-                        Picker("", selection: $controller.fps) {
-                            Text("30 fps").tag(30)
-                            Text("60 fps").tag(60)
+                        labelWithHint("Quality", "Recorded in real time by the Mac's hardware encoder — no waiting after you stop. Balanced matches Apple's screen recorder at a quarter of the size.")
+                        Picker("", selection: $controller.recordingQuality) {
+                            ForEach(RecordingQuality.allCases) { q in
+                                Text(q.rawValue).tag(q)
+                            }
                         }
                         .labelsHidden()
                         .pickerStyle(.segmented)
                         .disabled(controller.isRecording)
                     }
+                    Text(controller.recordingQuality.summary)
+                        .font(.caption).foregroundStyle(.secondary)
+                        .padding(.leading, 124)
                     HStack {
                         labelWithHint("Resolution", "Capture scale. 1x is smallest, 2x is sharpest (Retina); 1.5x is a good balance of clarity and size.")
                         Picker("", selection: $controller.captureScale) {
@@ -67,26 +71,28 @@ struct ContentView: View {
                         .disabled(controller.isRecording || controller.captureSource == .phone)
                     }
 
-                    Divider()
+                    if controller.ffmpegAvailable {
+                        Divider()
 
-                    HStack(spacing: 4) {
-                        Toggle("Compress with FFmpeg", isOn: $controller.compressOutput)
-                            .disabled(controller.isRecording || controller.isCompressing)
-                            .fixedSize()
-                        helpHint("Re-encode the recording with HEVC after capture to shrink the file — typically about half the size at the same quality.")
-                        Spacer()
-                    }
-                    if controller.compressOutput {
-                        HStack {
-                            labelWithHint("Quality", "Compression level. Small = tiniest files, Quality = near-lossless. Balanced is recommended.")
-                            Picker("", selection: $controller.compressionQuality) {
-                                ForEach(FFmpegCompressor.Quality.allCases) { q in
-                                    Text(q.rawValue).tag(q)
+                        HStack(spacing: 4) {
+                            Toggle("Extra compression (FFmpeg)", isOn: $controller.compressOutput)
+                                .disabled(controller.isRecording || controller.isCompressing)
+                                .fixedSize()
+                            helpHint("Re-encode with x265 after you stop. Slightly smaller files, but it takes about as long as the recording itself. Usually not worth it.")
+                            Spacer()
+                        }
+                        if controller.compressOutput {
+                            HStack {
+                                labelWithHint("Level", "Small = tiniest files, Quality = near-lossless.")
+                                Picker("", selection: $controller.compressionQuality) {
+                                    ForEach(FFmpegCompressor.Quality.allCases) { q in
+                                        Text(q.rawValue).tag(q)
+                                    }
                                 }
+                                .labelsHidden()
+                                .pickerStyle(.segmented)
+                                .disabled(controller.isRecording || controller.isCompressing)
                             }
-                            .labelsHidden()
-                            .pickerStyle(.segmented)
-                            .disabled(controller.isRecording || controller.isCompressing)
                         }
                     }
                 }

@@ -43,6 +43,19 @@ final class FFmpegCompressor: @unchecked Sendable {
         }
     }
 
+    /// True when an FFmpeg install is found (Homebrew paths or PATH).
+    static var isAvailable: Bool {
+        for candidate in ["/opt/homebrew/bin/ffmpeg", "/usr/local/bin/ffmpeg"] {
+            if FileManager.default.isExecutableFile(atPath: candidate) { return true }
+        }
+        if let path = ProcessInfo.processInfo.environment["PATH"] {
+            for dir in path.split(separator: ":") {
+                if FileManager.default.isExecutableFile(atPath: "\(dir)/ffmpeg") { return true }
+            }
+        }
+        return false
+    }
+
     /// Progress callback — fraction in 0…1.
     var onProgress: ((Double) -> Void)?
 
@@ -116,7 +129,7 @@ final class FFmpegCompressor: @unchecked Sendable {
             "-x265-params", x265Params,
             "-pix_fmt", "yuv420p10le",                // 10-bit Main10
             "-tag:v", "hvc1",                         // QuickTime compatibility
-            "-c:a", "aac", "-b:a", "128k",
+            "-c:a", "copy",                           // audio is already AAC; don't degrade it twice
             "-movflags", "+faststart",
             "-progress", "pipe:1",                    // machine-readable progress
             tmp.path

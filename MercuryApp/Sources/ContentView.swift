@@ -60,7 +60,7 @@ struct ContentView: View {
                         .font(.caption).foregroundStyle(.secondary)
                         .padding(.leading, 124)
                     HStack {
-                        labelWithHint("Resolution", "Capture scale. 1x is smallest, 2x is sharpest (Retina); 1.5x is a good balance of clarity and size.")
+                        labelWithHint("Resolution", "1080p is what Loom and most screen recorders produce. 4K captures Retina detail so small text stays crisp, at roughly twice the size.")
                         Picker("", selection: $controller.captureScale) {
                             ForEach(CaptureScale.allCases) { s in
                                 Text(s.rawValue).tag(s)
@@ -70,6 +70,11 @@ struct ContentView: View {
                         .pickerStyle(.segmented)
                         .disabled(controller.isRecording || controller.captureSource == .phone)
                     }
+                    Text(controller.captureSource == .phone
+                         ? "iPhone recordings always use the phone's native resolution."
+                         : controller.captureScale.summary)
+                        .font(.caption).foregroundStyle(.secondary)
+                        .padding(.leading, 124)
 
                     if controller.ffmpegAvailable {
                         Divider()

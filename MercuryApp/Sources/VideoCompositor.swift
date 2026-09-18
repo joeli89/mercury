@@ -22,10 +22,13 @@ final class VideoCompositor {
     // Background + Full width: a fixed 1920×1080 presentation frame with the
     // content centred inside a margin.
     // Background + Hug: the frame wraps the content plus the margin.
+    //
+    // Sources sharper than 1080p (Retina capture at 1.5x/2x, the iPhone's
+    // native 1206-wide screen) get a 4K-class canvas — 3840 / 2160 wide —
+    // so their detail isn't thrown away. Constant-quality encoding means the
+    // file only grows where there is real detail.
     static let landscapeWidth = 1920
     static let portraitWidth  = 1080
-    static let frameWidth  = 1920
-    static let frameHeight = 1080
     static let marginFraction: CGFloat = 0.05   // of canvas width
     let canvasWidth: Int
     let canvasHeight: Int
@@ -33,9 +36,15 @@ final class VideoCompositor {
     /// Canvas size for a source of the given pixel size.
     static func canvasSize(forSourceWidth w: Int, height h: Int,
                            hasBackground: Bool, fullWidth: Bool) -> (width: Int, height: Int) {
-        guard w > 0, h > 0 else { return (frameWidth, frameHeight) }
-        if hasBackground && fullWidth { return (frameWidth, frameHeight) }
-        let cw = h > w ? portraitWidth : landscapeWidth
+        guard w > 0, h > 0 else { return (landscapeWidth, landscapeWidth * 9 / 16) }
+        // 1x when the source fits in 1080p; 2x (4K-class) when it's sharper.
+        let sharp = h > w ? (w > portraitWidth) : (w > landscapeWidth)
+        let mult = sharp ? 2 : 1
+        if hasBackground && fullWidth {
+            let fw = landscapeWidth * mult
+            return (fw, fw * 9 / 16)
+        }
+        let cw = (h > w ? portraitWidth : landscapeWidth) * mult
         let margin = hasBackground ? CGFloat(cw) * marginFraction : 0
         let contentW = CGFloat(cw) - 2 * margin
         let contentH = CGFloat(h) * contentW / CGFloat(w)
@@ -230,7 +239,8 @@ final class VideoCompositor {
         // then the content is refitted inside (pad + bezel) so the bezel never
         // spills past the margin.
         let fit0 = min(availW / srcW, availH / srcH)
-        let bezel = min(min(srcW, srcH) * fit0 * bezelFraction, bezelMaxWidth)
+        // Bezel cap scales with the canvas so 4K output keeps the same look.
+        let bezel = min(min(srcW, srcH) * fit0 * bezelFraction, bezelMaxWidth * (fw / CGFloat(Self.landscapeWidth)))
 
         // Scale source to fit within the padded area (maintain aspect ratio).
         let scale = min((availW - 2 * bezel) / srcW, (availH - 2 * bezel) / srcH)

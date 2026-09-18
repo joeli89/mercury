@@ -33,7 +33,7 @@ enum RecordingQuality: String, CaseIterable, Identifiable {
     var quality: Double {
         switch self {
         case .small:    return 0.55   // ~470 MB/h at 1080p, VMAF ~92
-        case .balanced: return 0.65   // ~730 MB/h, VMAF ~94
+        case .balanced: return 0.70   // ~1 GB/h at 1080p, VMAF ~95
         case .high:     return 0.75   // ~1.3 GB/h, VMAF ~96
         }
     }
@@ -42,8 +42,8 @@ enum RecordingQuality: String, CaseIterable, Identifiable {
     var maxBitrate: Int {
         switch self {
         case .small:    return 4_000_000
-        case .balanced: return 8_000_000
-        case .high:     return 16_000_000
+        case .balanced: return 12_000_000
+        case .high:     return 24_000_000
         }
     }
     var summary: String {
@@ -55,17 +55,23 @@ enum RecordingQuality: String, CaseIterable, Identifiable {
     }
 }
 
+/// Output resolution. 1080p captures the display at 1× (logical pixels);
+/// 4K captures at 2× (Retina) and renders onto a 4K-class canvas.
 enum CaptureScale: String, CaseIterable, Identifiable {
-    case one     = "1x"
-    case oneHalf = "1.5x"
-    case two     = "2x"
+    case hd  = "1080p"
+    case uhd = "4K"
 
     var id: String { rawValue }
     var factor: CGFloat {
         switch self {
-        case .one:     return 1.0
-        case .oneHalf: return 1.5
-        case .two:     return 2.0
+        case .hd:  return 1.0
+        case .uhd: return 2.0
+        }
+    }
+    var summary: String {
+        switch self {
+        case .hd:  return "Loom-sized files. Right for most demos."
+        case .uhd: return "Retina-sharp text, about twice the file size."
         }
     }
 }
@@ -99,7 +105,7 @@ final class RecordingController: ObservableObject {
 
     @Published var recordingQuality: RecordingQuality = .balanced
     var fps: Int { recordingQuality.fps }
-    @Published var captureScale: CaptureScale = .oneHalf
+    @Published var captureScale: CaptureScale = .hd
 
     // FFmpeg post-compression — optional extra step, only offered when an
     // FFmpeg install is found on this Mac. Off by default: the hardware
